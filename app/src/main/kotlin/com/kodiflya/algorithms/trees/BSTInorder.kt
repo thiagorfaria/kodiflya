@@ -8,7 +8,7 @@ import com.kodiflya.core.plugin.Complexity
 import com.kodiflya.core.plugin.MetricLabel
 import com.kodiflya.core.plugin.NodeState
 import com.kodiflya.core.plugin.TreeMetrics
-import com.kodiflya.core.plugin.VizStep
+import com.kodiflya.core.plugin.VisualizationStep
 
 class BSTInorder : AlgorithmPlugin {
 
@@ -30,7 +30,7 @@ class BSTInorder : AlgorithmPlugin {
 
     override fun initialData() = defaultTreeInput()
 
-    override fun steps(input: AlgorithmInput): Sequence<VizStep> {
+    override fun steps(input: AlgorithmInput): Sequence<VisualizationStep> {
         val n = BST_VALUES.size.toLong()
         val h = 3L
 
@@ -38,19 +38,19 @@ class BSTInorder : AlgorithmPlugin {
             val nodeStates = initialNodeStates()
             val sequence = mutableListOf<Int>()
 
-            suspend fun SequenceScope<VizStep>.inorder(nodeValue: Int?) {
+            suspend fun SequenceScope<VisualizationStep>.inorder(nodeValue: Int?) {
                 if (nodeValue == null) return
                 val node = BST_NODES[nodeValue] ?: return
                 inorder(node.left)
                 nodeStates[nodeValue] = NodeState.ACTIVE
                 sequence.add(nodeValue)
-                yield(VizStep.Tree(nodeStates.toMap(), sequence.toList(), TreeMetrics(sequence.size.toLong(), n, h)))
+                yield(VisualizationStep.Tree(nodeStates.toMap(), sequence.toList(), TreeMetrics(sequence.size.toLong(), n, h)))
                 nodeStates[nodeValue] = NodeState.VISITED
                 inorder(node.right)
             }
 
             inorder(BST_ROOT)
-            yield(VizStep.Tree(nodeStates.toMap(), sequence.toList(), TreeMetrics(sequence.size.toLong(), n, h)))
+            yield(VisualizationStep.Tree(nodeStates.toMap(), sequence.toList(), TreeMetrics(sequence.size.toLong(), n, h)))
         }
     }
 }

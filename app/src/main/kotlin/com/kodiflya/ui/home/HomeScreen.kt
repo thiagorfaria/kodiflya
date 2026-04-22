@@ -132,9 +132,9 @@ private fun CategoryCard(
                 .background(ElementDefault.copy(alpha = 0.4f)),
         ) {
             when (summary.category) {
-                Category.SORTING -> SortingMiniViz(modifier = Modifier.padding(6.dp))
-                Category.GRAPH   -> GraphMiniViz(modifier = Modifier.padding(6.dp))
-                Category.TREES   -> TreeMiniViz(modifier = Modifier.padding(6.dp))
+                Category.SORTING -> SortingMiniVisualization(modifier = Modifier.padding(6.dp))
+                Category.GRAPH   -> GraphMiniVisualization(modifier = Modifier.padding(6.dp))
+                Category.TREES   -> TreeMiniVisualization(modifier = Modifier.padding(6.dp))
             }
         }
     }

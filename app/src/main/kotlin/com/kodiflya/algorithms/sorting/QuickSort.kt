@@ -7,7 +7,7 @@ import com.kodiflya.core.plugin.ColorRole
 import com.kodiflya.core.plugin.Complexity
 import com.kodiflya.core.plugin.MetricLabel
 import com.kodiflya.core.plugin.SortMetrics
-import com.kodiflya.core.plugin.VizStep
+import com.kodiflya.core.plugin.VisualizationStep
 
 class QuickSort : AlgorithmPlugin {
 
@@ -32,7 +32,7 @@ class QuickSort : AlgorithmPlugin {
         return AlgorithmInput.SortInput(values)
     }
 
-    override fun steps(input: AlgorithmInput): Sequence<VizStep> {
+    override fun steps(input: AlgorithmInput): Sequence<VisualizationStep> {
         val arr = (input as AlgorithmInput.SortInput).values.copyOf()
 
         return sequence {
@@ -40,13 +40,13 @@ class QuickSort : AlgorithmPlugin {
             var swaps = 0L
             val sorted = mutableSetOf<Int>()
 
-            suspend fun SequenceScope<VizStep>.partition(low: Int, high: Int): Int {
+            suspend fun SequenceScope<VisualizationStep>.partition(low: Int, high: Int): Int {
                 val pivotVal = arr[high]
                 var i = low - 1
                 for (j in low until high) {
                     comparisons++
                     yield(
-                        VizStep.Sort(
+                        VisualizationStep.Sort(
                             values = arr.copyOf(),
                             comparing = setOf(j, high),
                             swapping = emptySet(),
@@ -60,7 +60,7 @@ class QuickSort : AlgorithmPlugin {
                         val tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp
                         swaps++
                         yield(
-                            VizStep.Sort(
+                            VisualizationStep.Sort(
                                 values = arr.copyOf(),
                                 comparing = emptySet(),
                                 swapping = setOf(i, j),
@@ -76,7 +76,7 @@ class QuickSort : AlgorithmPlugin {
                 return i + 1
             }
 
-            suspend fun SequenceScope<VizStep>.quickSort(low: Int, high: Int) {
+            suspend fun SequenceScope<VisualizationStep>.quickSort(low: Int, high: Int) {
                 if (low >= high) {
                     if (low == high) sorted.add(low)
                     return
@@ -91,7 +91,7 @@ class QuickSort : AlgorithmPlugin {
 
             sorted.addAll(0 until arr.size)
             yield(
-                VizStep.Sort(
+                VisualizationStep.Sort(
                     values = arr.copyOf(),
                     comparing = emptySet(),
                     swapping = emptySet(),

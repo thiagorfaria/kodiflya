@@ -7,7 +7,7 @@ import com.kodiflya.core.plugin.ColorRole
 import com.kodiflya.core.plugin.Complexity
 import com.kodiflya.core.plugin.GridMetrics
 import com.kodiflya.core.plugin.MetricLabel
-import com.kodiflya.core.plugin.VizStep
+import com.kodiflya.core.plugin.VisualizationStep
 import java.util.PriorityQueue
 
 class Dijkstra : AlgorithmPlugin {
@@ -30,7 +30,7 @@ class Dijkstra : AlgorithmPlugin {
 
     override fun initialData() = defaultGridInput()
 
-    override fun steps(input: AlgorithmInput): Sequence<VizStep> {
+    override fun steps(input: AlgorithmInput): Sequence<VisualizationStep> {
         val grid = input as AlgorithmInput.GridInput
 
         return sequence {
@@ -67,7 +67,7 @@ class Dijkstra : AlgorithmPlugin {
                 }
 
                 yield(
-                    VizStep.Grid(
+                    VisualizationStep.Grid(
                         cells = buildCells(grid.width, grid.height, grid.walls, grid.start, grid.end, processed, inQueue),
                         frontier = inQueue.toSet(),
                         path = emptyList(),
@@ -78,7 +78,7 @@ class Dijkstra : AlgorithmPlugin {
 
             val path = if (found) tracePath(grid.end, parent) else emptyList()
             yield(
-                VizStep.Grid(
+                VisualizationStep.Grid(
                     cells = buildCells(grid.width, grid.height, grid.walls, grid.start, grid.end, processed, emptySet(), path.toSet()),
                     frontier = emptySet(),
                     path = path,

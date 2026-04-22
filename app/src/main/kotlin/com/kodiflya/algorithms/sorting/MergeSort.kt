@@ -7,7 +7,7 @@ import com.kodiflya.core.plugin.ColorRole
 import com.kodiflya.core.plugin.Complexity
 import com.kodiflya.core.plugin.MetricLabel
 import com.kodiflya.core.plugin.SortMetrics
-import com.kodiflya.core.plugin.VizStep
+import com.kodiflya.core.plugin.VisualizationStep
 
 class MergeSort : AlgorithmPlugin {
 
@@ -32,7 +32,7 @@ class MergeSort : AlgorithmPlugin {
         return AlgorithmInput.SortInput(values)
     }
 
-    override fun steps(input: AlgorithmInput): Sequence<VizStep> {
+    override fun steps(input: AlgorithmInput): Sequence<VisualizationStep> {
         val arr = (input as AlgorithmInput.SortInput).values.copyOf()
 
         return sequence {
@@ -40,7 +40,7 @@ class MergeSort : AlgorithmPlugin {
             var writes = 0L
             val sorted = mutableSetOf<Int>()
 
-            suspend fun SequenceScope<VizStep>.merge(left: Int, mid: Int, right: Int) {
+            suspend fun SequenceScope<VisualizationStep>.merge(left: Int, mid: Int, right: Int) {
                 val leftArr = arr.copyOfRange(left, mid + 1)
                 val rightArr = arr.copyOfRange(mid + 1, right + 1)
                 var i = 0; var j = 0; var k = left
@@ -48,7 +48,7 @@ class MergeSort : AlgorithmPlugin {
                 while (i < leftArr.size && j < rightArr.size) {
                     comparisons++
                     yield(
-                        VizStep.Sort(
+                        VisualizationStep.Sort(
                             values = arr.copyOf(),
                             comparing = setOf(left + i, mid + 1 + j),
                             swapping = emptySet(),
@@ -64,7 +64,7 @@ class MergeSort : AlgorithmPlugin {
                     }
                     writes++
                     yield(
-                        VizStep.Sort(
+                        VisualizationStep.Sort(
                             values = arr.copyOf(),
                             comparing = emptySet(),
                             swapping = setOf(k - 1),
@@ -78,7 +78,7 @@ class MergeSort : AlgorithmPlugin {
                 while (j < rightArr.size) { arr[k++] = rightArr[j++]; writes++ }
             }
 
-            suspend fun SequenceScope<VizStep>.mergeSort(left: Int, right: Int) {
+            suspend fun SequenceScope<VisualizationStep>.mergeSort(left: Int, right: Int) {
                 if (left >= right) {
                     sorted.add(left)
                     return
@@ -94,7 +94,7 @@ class MergeSort : AlgorithmPlugin {
 
             sorted.addAll(0 until arr.size)
             yield(
-                VizStep.Sort(
+                VisualizationStep.Sort(
                     values = arr.copyOf(),
                     comparing = emptySet(),
                     swapping = emptySet(),

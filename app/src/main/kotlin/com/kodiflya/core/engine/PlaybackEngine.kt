@@ -3,8 +3,8 @@ package com.kodiflya.core.engine
 import com.kodiflya.core.plugin.AlgorithmInput
 import com.kodiflya.core.plugin.AlgorithmPlugin
 import com.kodiflya.core.plugin.PlaybackStatus
-import com.kodiflya.core.plugin.VizState
-import com.kodiflya.core.plugin.VizStep
+import com.kodiflya.core.plugin.VisualizationState
+import com.kodiflya.core.plugin.VisualizationStep
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
@@ -22,8 +22,8 @@ class PlaybackEngine @AssistedInject constructor(
 ) {
     private var currentInput: AlgorithmInput = plugin.initialData()
 
-    private val _state = MutableStateFlow(VizState.idle())
-    val state: StateFlow<VizState> = _state.asStateFlow()
+    private val _state = MutableStateFlow(VisualizationState.idle())
+    val state: StateFlow<VisualizationState> = _state.asStateFlow()
 
     // Step delay in ms. 400ms = 1×. Speed multiplier divides this value.
     private val _speedMs = MutableStateFlow(400L)
@@ -31,7 +31,7 @@ class PlaybackEngine @AssistedInject constructor(
 
     private var playbackJob: Job? = null
     private var stepCursor: Int = 0
-    private var allSteps: List<VizStep>? = null
+    private var allSteps: List<VisualizationStep>? = null
 
     fun play() {
         if (playbackJob?.isActive == true) return
@@ -67,7 +67,7 @@ class PlaybackEngine @AssistedInject constructor(
         stepCursor = 0
         allSteps = null
         currentInput = plugin.initialData()
-        _state.value = VizState.idle()
+        _state.value = VisualizationState.idle()
     }
 
     // Multiplier: 0.5 → 800ms, 1.0 → 400ms, 2.0 → 200ms, 4.0 → 100ms, 8.0 → 50ms

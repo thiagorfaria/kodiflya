@@ -9,7 +9,7 @@ interface AlgorithmPlugin {
     val metricLabels: List<MetricLabel>
 
     fun initialData(): AlgorithmInput
-    fun steps(input: AlgorithmInput): Sequence<VizStep>
+    fun steps(input: AlgorithmInput): Sequence<VisualizationStep>
 }
 
 enum class Category { SORTING, GRAPH, TREES }

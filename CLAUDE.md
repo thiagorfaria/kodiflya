@@ -132,6 +132,33 @@ Kodiflya is a native Android app that visualizes algorithms for interview prepar
 
 ---
 
+## Naming Conventions
+
+### Rules (always apply)
+- Classes are nouns: `PlaybackEngine`, `AlgorithmPlugin`
+- Functions are verbs: `play()`, `reset()`, `fetchUsers()`
+- Booleans start with `is` / `has` / `can`: `isPlaying`, `hasPermission`
+- Constants are UPPER_SNAKE_CASE: `ROUTE_HOME`, `MAX_RETRY_COUNT`
+- No abbreviations in class, function, or variable names (see exceptions below)
+
+### Exceptions — keep as-is
+- `AlgorithmPlugin`, `BubbleSort`, `BFS`, `DFS`, `Dijkstra` — proper CS nouns
+- `id` — universally understood
+- External API surface: `NavController`, `NavHost`, `NavDestination` (from `androidx.navigation`)
+
+### Patterns in use
+| Pattern | Example |
+|---|---|
+| `FeatureViewModel` | `SortingViewModel`, `GraphViewModel` |
+| `FeatureScreen` (Composable entry point) | `SortingScreen`, `HomeScreen` |
+| `FeatureUiState` | `SortingUiState` — defer until needed |
+| `FeatureEvent` | `SortingEvent` — defer until needed |
+
+### Deferred (no data layer in v1)
+`UseCase`, `Repository`, `Impl`, `Dto`, `Entity`, `Mapper` — introduce only when a persistence or network layer exists.
+
+---
+
 ## Visual Language (from validated prototypes)
 
 | Token | Value |
@@ -171,7 +198,7 @@ app/
     main/
       kotlin/com/kodiflya/
         core/
-          plugin/   AlgorithmPlugin.kt, VizStep.kt, VizState.kt
+          plugin/   AlgorithmPlugin.kt, VisualizationStep.kt, VisualizationState.kt
           engine/   PlaybackEngine.kt
         algorithms/
           sorting/  BubbleSort.kt, InsertionSort.kt, MergeSort.kt, QuickSort.kt

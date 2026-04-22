@@ -9,7 +9,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import com.kodiflya.core.plugin.AlgorithmInput
 import com.kodiflya.core.plugin.CellState
-import com.kodiflya.core.plugin.VizStep
+import com.kodiflya.core.plugin.VisualizationStep
 import com.kodiflya.ui.theme.AccentGreen
 import com.kodiflya.ui.theme.AccentPeach
 import com.kodiflya.ui.theme.AccentPurple
@@ -20,7 +20,7 @@ private val CellOpen = Color(0xFF252525) // slightly lighter than Surface to sho
 
 @Composable
 fun GraphCanvas(
-    step: VizStep.Grid?,
+    step: VisualizationStep.Grid?,
     initialGrid: AlgorithmInput.GridInput,
     modifier: Modifier = Modifier,
 ) {

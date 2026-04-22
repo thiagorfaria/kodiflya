@@ -7,7 +7,7 @@ import com.kodiflya.core.plugin.ColorRole
 import com.kodiflya.core.plugin.Complexity
 import com.kodiflya.core.plugin.MetricLabel
 import com.kodiflya.core.plugin.SortMetrics
-import com.kodiflya.core.plugin.VizStep
+import com.kodiflya.core.plugin.VisualizationStep
 
 class InsertionSort : AlgorithmPlugin {
 
@@ -32,7 +32,7 @@ class InsertionSort : AlgorithmPlugin {
         return AlgorithmInput.SortInput(values)
     }
 
-    override fun steps(input: AlgorithmInput): Sequence<VizStep> {
+    override fun steps(input: AlgorithmInput): Sequence<VisualizationStep> {
         val arr = (input as AlgorithmInput.SortInput).values.copyOf()
         val n = arr.size
 
@@ -46,7 +46,7 @@ class InsertionSort : AlgorithmPlugin {
                 while (j > 0) {
                     comparisons++
                     yield(
-                        VizStep.Sort(
+                        VisualizationStep.Sort(
                             values = arr.copyOf(),
                             comparing = setOf(j - 1, j),
                             swapping = emptySet(),
@@ -61,7 +61,7 @@ class InsertionSort : AlgorithmPlugin {
                         arr[j] = tmp
                         swaps++
                         yield(
-                            VizStep.Sort(
+                            VisualizationStep.Sort(
                                 values = arr.copyOf(),
                                 comparing = emptySet(),
                                 swapping = setOf(j - 1, j),
@@ -80,7 +80,7 @@ class InsertionSort : AlgorithmPlugin {
 
             sorted.addAll(0 until n)
             yield(
-                VizStep.Sort(
+                VisualizationStep.Sort(
                     values = arr.copyOf(),
                     comparing = emptySet(),
                     swapping = emptySet(),

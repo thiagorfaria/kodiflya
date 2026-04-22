@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.kodiflya.algorithms.trees.EDGES
 import com.kodiflya.algorithms.trees.NODE_POSITIONS
 import com.kodiflya.core.plugin.NodeState
-import com.kodiflya.core.plugin.VizStep
+import com.kodiflya.core.plugin.VisualizationStep
 import com.kodiflya.ui.theme.AccentGreen
 import com.kodiflya.ui.theme.AccentPeach
 import com.kodiflya.ui.theme.Background
@@ -25,7 +25,7 @@ import com.kodiflya.ui.theme.SurfaceBorder
 
 @Composable
 fun TreeCanvas(
-    step: VizStep.Tree?,
+    step: VisualizationStep.Tree?,
     modifier: Modifier = Modifier,
 ) {
     val textMeasurer = rememberTextMeasurer()

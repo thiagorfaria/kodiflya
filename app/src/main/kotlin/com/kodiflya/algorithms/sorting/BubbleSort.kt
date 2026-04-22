@@ -7,7 +7,7 @@ import com.kodiflya.core.plugin.ColorRole
 import com.kodiflya.core.plugin.Complexity
 import com.kodiflya.core.plugin.MetricLabel
 import com.kodiflya.core.plugin.SortMetrics
-import com.kodiflya.core.plugin.VizStep
+import com.kodiflya.core.plugin.VisualizationStep
 
 // One step = one comparison (the atomic decision a human would narrate aloud).
 // The full array snapshot is carried in every step for stateless rendering.
@@ -34,7 +34,7 @@ class BubbleSort : AlgorithmPlugin {
         return AlgorithmInput.SortInput(values)
     }
 
-    override fun steps(input: AlgorithmInput): Sequence<VizStep> {
+    override fun steps(input: AlgorithmInput): Sequence<VisualizationStep> {
         val arr = (input as AlgorithmInput.SortInput).values.copyOf()
         val n = arr.size
 
@@ -51,7 +51,7 @@ class BubbleSort : AlgorithmPlugin {
 
                     // Comparison step — peach on both elements being compared
                     yield(
-                        VizStep.Sort(
+                        VisualizationStep.Sort(
                             values = arr.copyOf(),
                             comparing = setOf(j, j + 1),
                             swapping = emptySet(),
@@ -70,7 +70,7 @@ class BubbleSort : AlgorithmPlugin {
 
                         // Swap step — emit after swap so values reflect the swapped state
                         yield(
-                            VizStep.Sort(
+                            VisualizationStep.Sort(
                                 values = arr.copyOf(),
                                 comparing = emptySet(),
                                 swapping = setOf(j, j + 1),
@@ -95,7 +95,7 @@ class BubbleSort : AlgorithmPlugin {
             // Final frame: everything sorted, no active elements
             sorted.addAll(0 until n)
             yield(
-                VizStep.Sort(
+                VisualizationStep.Sort(
                     values = arr.copyOf(),
                     comparing = emptySet(),
                     swapping = emptySet(),

@@ -8,7 +8,7 @@ import com.kodiflya.core.plugin.Complexity
 import com.kodiflya.core.plugin.MetricLabel
 import com.kodiflya.core.plugin.PlaybackStatus
 import com.kodiflya.core.plugin.SortMetrics
-import com.kodiflya.core.plugin.VizStep
+import com.kodiflya.core.plugin.VisualizationStep
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
@@ -27,7 +27,7 @@ class PlaybackEngineTest {
 
     private val fakeInput = AlgorithmInput.SortInput(intArrayOf(3, 1, 2))
     private val fakeSteps = (0..9).map { i ->
-        VizStep.Sort(
+        VisualizationStep.Sort(
             values = intArrayOf(i, i + 1, i + 2),
             comparing = setOf(i % 3),
             swapping = emptySet(),
@@ -45,7 +45,7 @@ class PlaybackEngineTest {
         override val complexity = Complexity("O(1)", "O(1)", "O(1)", "O(1)")
         override val metricLabels = listOf(MetricLabel("Test", ColorRole.NEUTRAL))
         override fun initialData(): AlgorithmInput = fakeInput
-        override fun steps(input: AlgorithmInput): Sequence<VizStep> = fakeSteps.asSequence()
+        override fun steps(input: AlgorithmInput): Sequence<VisualizationStep> = fakeSteps.asSequence()
     }
 
     private lateinit var engine: PlaybackEngine

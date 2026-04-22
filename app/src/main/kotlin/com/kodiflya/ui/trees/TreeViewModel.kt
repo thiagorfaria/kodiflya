@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.kodiflya.core.engine.PlaybackEngineFactory
 import com.kodiflya.core.plugin.AlgorithmPlugin
 import com.kodiflya.core.plugin.Category
-import com.kodiflya.core.plugin.VizState
+import com.kodiflya.core.plugin.VisualizationState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,7 +26,7 @@ class TreeViewModel @Inject constructor(
 
     private var engine = engineFactory.create(treePlugins[0], viewModelScope)
 
-    val state: StateFlow<VizState> get() = engine.state
+    val state: StateFlow<VisualizationState> get() = engine.state
 
     fun selectAlgorithm(index: Int) {
         if (index == _activeIndex.value) return

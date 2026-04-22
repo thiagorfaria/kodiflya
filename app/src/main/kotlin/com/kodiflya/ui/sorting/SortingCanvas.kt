@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import com.kodiflya.core.plugin.VizStep
+import com.kodiflya.core.plugin.VisualizationStep
 import com.kodiflya.ui.theme.AccentGreen
 import com.kodiflya.ui.theme.AccentPeach
 import com.kodiflya.ui.theme.AccentPurple
@@ -14,7 +14,7 @@ import com.kodiflya.ui.theme.ElementDefault
 
 @Composable
 fun SortingCanvas(
-    step: VizStep.Sort?,
+    step: VisualizationStep.Sort?,
     modifier: Modifier = Modifier,
 ) {
     Canvas(modifier = modifier) {

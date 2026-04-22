@@ -6,7 +6,7 @@ import com.kodiflya.core.engine.PlaybackEngineFactory
 import com.kodiflya.core.plugin.AlgorithmPlugin
 import com.kodiflya.core.plugin.Category
 import com.kodiflya.core.plugin.Complexity
-import com.kodiflya.core.plugin.VizState
+import com.kodiflya.core.plugin.VisualizationState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,7 +28,7 @@ class SortingViewModel @Inject constructor(
     private var engine = engineFactory.create(sortingPlugins[0], viewModelScope)
 
     private val _state = MutableStateFlow(engine.state.value)
-    val state: StateFlow<VizState> get() = engine.state
+    val state: StateFlow<VisualizationState> get() = engine.state
 
     val algorithmName: String get() = sortingPlugins[_activeIndex.value].displayName
     val complexity: Complexity get() = sortingPlugins[_activeIndex.value].complexity

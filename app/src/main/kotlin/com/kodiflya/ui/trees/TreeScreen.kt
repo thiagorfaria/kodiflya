@@ -27,7 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kodiflya.algorithms.trees.BST_VALUES
 import com.kodiflya.core.plugin.TreeMetrics
-import com.kodiflya.core.plugin.VizStep
+import com.kodiflya.core.plugin.VisualizationStep
 import com.kodiflya.ui.components.AlgorithmChipRow
 import com.kodiflya.ui.components.ComplexityCardsRow
 import com.kodiflya.ui.components.ControlsRow
@@ -46,11 +46,11 @@ import com.kodiflya.ui.theme.MetricLabel as MetricLabelColor
 
 @Composable
 fun TreeScreen(viewModel: TreeViewModel = hiltViewModel()) {
-    val vizState by viewModel.state.collectAsStateWithLifecycle()
+    val visualizationState by viewModel.state.collectAsStateWithLifecycle()
     val activeIndex by viewModel.activeIndex.collectAsStateWithLifecycle()
     var speedIndex by remember { mutableFloatStateOf(1f) }
 
-    val step = vizState.currentStep as? VizStep.Tree
+    val step = visualizationState.currentStep as? VisualizationStep.Tree
     val metrics = step?.metrics ?: TreeMetrics(0L, BST_VALUES.size.toLong(), 3L)
 
     Column(
@@ -100,7 +100,7 @@ fun TreeScreen(viewModel: TreeViewModel = hiltViewModel()) {
         ComplexityCardsRow(complexity = viewModel.treePlugins[activeIndex].complexity)
 
         ControlsRow(
-            playbackStatus = vizState.playbackStatus,
+            playbackStatus = visualizationState.playbackStatus,
             speedIndex = speedIndex,
             onPlay = viewModel::play,
             onPause = viewModel::pause,
