@@ -1,4 +1,4 @@
-package com.kodiflya.ui.trees
+package com.kodiflya.ui.screens.trees
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -28,12 +28,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kodiflya.algorithms.trees.BST_VALUES
 import com.kodiflya.core.plugin.TreeMetrics
 import com.kodiflya.core.plugin.VisualizationStep
-import com.kodiflya.ui.components.AlgorithmChipRow
-import com.kodiflya.ui.components.ComplexityCardsRow
-import com.kodiflya.ui.components.ControlsRow
-import com.kodiflya.ui.components.MetricCard
-import com.kodiflya.ui.components.ScreenHeader
-import com.kodiflya.ui.components.speedLevels
+import com.kodiflya.ui.component.AlgorithmChipRow
+import com.kodiflya.ui.component.ComplexityCardsRow
+import com.kodiflya.ui.component.ControlsRow
+import com.kodiflya.ui.component.MetricCard
+import com.kodiflya.ui.component.ScreenHeader
+import com.kodiflya.ui.component.speedLevels
 import com.kodiflya.ui.theme.AccentAmber
 import com.kodiflya.ui.theme.AccentGreen
 import com.kodiflya.ui.theme.AccentPeach

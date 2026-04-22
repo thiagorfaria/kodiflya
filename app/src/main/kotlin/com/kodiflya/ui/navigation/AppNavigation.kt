@@ -19,10 +19,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.kodiflya.core.plugin.Category
-import com.kodiflya.ui.graph.GraphScreen
-import com.kodiflya.ui.home.HomeScreen
-import com.kodiflya.ui.sorting.SortingScreen
-import com.kodiflya.ui.trees.TreeScreen
+import com.kodiflya.ui.screens.graph.GraphScreen
+import com.kodiflya.ui.screens.home.HomeScreen
+import com.kodiflya.ui.screens.sorting.SortingScreen
+import com.kodiflya.ui.screens.trees.TreeScreen
 import com.kodiflya.ui.theme.AccentGreen
 import com.kodiflya.ui.theme.Background
 import com.kodiflya.ui.theme.Surface

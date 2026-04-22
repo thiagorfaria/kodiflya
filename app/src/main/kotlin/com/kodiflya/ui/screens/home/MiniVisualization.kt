@@ -1,4 +1,4 @@
-package com.kodiflya.ui.home
+package com.kodiflya.ui.screens.home
 
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat

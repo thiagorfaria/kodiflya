@@ -1,4 +1,4 @@
-package com.kodiflya.ui.components
+package com.kodiflya.ui.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme

@@ -1,4 +1,4 @@
-package com.kodiflya.ui.icons
+package com.kodiflya.ui.component
 
 import com.kodiflya.core.plugin.Category
 

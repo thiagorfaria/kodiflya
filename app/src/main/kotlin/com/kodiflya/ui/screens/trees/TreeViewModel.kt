@@ -1,4 +1,4 @@
-package com.kodiflya.ui.trees
+package com.kodiflya.ui.screens.trees
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

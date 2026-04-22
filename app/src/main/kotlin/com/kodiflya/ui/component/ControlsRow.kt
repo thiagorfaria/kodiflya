@@ -1,4 +1,4 @@
-package com.kodiflya.ui.components
+package com.kodiflya.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.kodiflya.core.plugin.PlaybackStatus
-import com.kodiflya.ui.icons.KodiflyaIcons
+import com.kodiflya.ui.component.KodiflyaIcons
 import com.kodiflya.ui.theme.AccentGreen
 import com.kodiflya.ui.theme.Background
 import com.kodiflya.ui.theme.ElementDefault

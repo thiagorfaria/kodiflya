@@ -1,4 +1,4 @@
-package com.kodiflya.ui.graph
+package com.kodiflya.ui.screens.sorting
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,32 +20,29 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kodiflya.core.plugin.AlgorithmInput
-import com.kodiflya.core.plugin.GridMetrics
+import com.kodiflya.core.plugin.SortMetrics
 import com.kodiflya.core.plugin.VisualizationStep
-import com.kodiflya.ui.components.AlgorithmChipRow
-import com.kodiflya.ui.components.ComplexityCardsRow
-import com.kodiflya.ui.components.ControlsRow
-import com.kodiflya.ui.components.MetricCard
-import com.kodiflya.ui.components.ScreenHeader
-import com.kodiflya.ui.components.speedLevels
+import com.kodiflya.ui.component.AlgorithmChipRow
+import com.kodiflya.ui.component.ComplexityCardsRow
+import com.kodiflya.ui.component.ControlsRow
+import com.kodiflya.ui.component.MetricCard
+import com.kodiflya.ui.component.ScreenHeader
+import com.kodiflya.ui.component.speedLevels
 import com.kodiflya.ui.theme.AccentAmber
 import com.kodiflya.ui.theme.AccentGreen
-import com.kodiflya.ui.theme.AccentPurple
+import com.kodiflya.ui.theme.AccentPeach
 import com.kodiflya.ui.theme.Background
 import com.kodiflya.ui.theme.Surface
 import com.kodiflya.ui.theme.SurfaceBorder
 
 @Composable
-fun GraphScreen(viewModel: GraphViewModel = hiltViewModel()) {
+fun SortingScreen(viewModel: SortingViewModel = hiltViewModel()) {
     val visualizationState by viewModel.state.collectAsStateWithLifecycle()
     val activeIndex by viewModel.activeIndex.collectAsStateWithLifecycle()
     var speedIndex by remember { mutableFloatStateOf(1f) }
 
-    val step = visualizationState.currentStep as? VisualizationStep.Grid
-    val metrics = step?.metrics ?: GridMetrics(0L, 0L)
-    val frontierSize = step?.frontier?.size?.toLong() ?: 0L
-    val initialGrid = viewModel.graphPlugins[activeIndex].initialData() as AlgorithmInput.GridInput
+    val step = visualizationState.currentStep as? VisualizationStep.Sort
+    val metrics = step?.metrics ?: SortMetrics(0L, 0L, 0L)
 
     Column(
         modifier = Modifier
@@ -54,10 +51,10 @@ fun GraphScreen(viewModel: GraphViewModel = hiltViewModel()) {
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        ScreenHeader(algorithmName = viewModel.graphPlugins[activeIndex].displayName)
+        ScreenHeader(algorithmName = viewModel.sortingPlugins[activeIndex].displayName)
 
         AlgorithmChipRow(
-            plugins = viewModel.graphPlugins,
+            plugins = viewModel.sortingPlugins,
             activeIndex = activeIndex,
             onSelect = { index ->
                 viewModel.selectAlgorithm(index)
@@ -69,9 +66,9 @@ fun GraphScreen(viewModel: GraphViewModel = hiltViewModel()) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            MetricCard("Visited", metrics.visited.toString(), AccentPurple, Modifier.weight(1f))
-            MetricCard("Frontier", frontierSize.toString(), AccentAmber, Modifier.weight(1f))
-            MetricCard("Path length", metrics.pathLength.toString(), AccentGreen, Modifier.weight(1f))
+            MetricCard("Comparisons", metrics.comparisons.toString(), AccentPeach, Modifier.weight(1f))
+            MetricCard("Swaps", metrics.swaps.toString(), AccentGreen, Modifier.weight(1f))
+            MetricCard("Array reads", metrics.arrayReads.toString(), AccentAmber, Modifier.weight(1f))
         }
 
         Box(
@@ -83,10 +80,13 @@ fun GraphScreen(viewModel: GraphViewModel = hiltViewModel()) {
                 .border(1.dp, SurfaceBorder, RoundedCornerShape(12.dp))
                 .padding(12.dp),
         ) {
-            GraphCanvas(step = step, initialGrid = initialGrid, modifier = Modifier.fillMaxSize())
+            SortingCanvas(
+                step = step,
+                modifier = Modifier.fillMaxSize(),
+            )
         }
 
-        ComplexityCardsRow(complexity = viewModel.graphPlugins[activeIndex].complexity)
+        ComplexityCardsRow(complexity = viewModel.sortingPlugins[activeIndex].complexity)
 
         ControlsRow(
             playbackStatus = visualizationState.playbackStatus,

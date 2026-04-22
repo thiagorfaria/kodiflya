@@ -1,4 +1,4 @@
-package com.kodiflya.ui.home
+package com.kodiflya.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import com.kodiflya.core.plugin.AlgorithmPlugin

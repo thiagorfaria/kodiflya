@@ -1,4 +1,4 @@
-package com.kodiflya.ui.graph
+package com.kodiflya.ui.screens.graph
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

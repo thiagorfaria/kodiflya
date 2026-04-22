@@ -1,4 +1,4 @@
-package com.kodiflya.ui.icons
+package com.kodiflya.ui.component
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Pause

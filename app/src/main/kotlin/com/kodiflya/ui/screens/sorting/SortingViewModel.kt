@@ -1,4 +1,4 @@
-package com.kodiflya.ui.sorting
+package com.kodiflya.ui.screens.sorting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

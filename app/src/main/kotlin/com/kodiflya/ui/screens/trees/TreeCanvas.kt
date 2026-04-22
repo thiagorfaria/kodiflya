@@ -1,4 +1,4 @@
-package com.kodiflya.ui.trees
+package com.kodiflya.ui.screens.trees
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable

@@ -1,4 +1,4 @@
-package com.kodiflya.ui.components
+package com.kodiflya.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

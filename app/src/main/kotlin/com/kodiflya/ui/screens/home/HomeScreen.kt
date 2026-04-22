@@ -1,4 +1,4 @@
-package com.kodiflya.ui.home
+package com.kodiflya.ui.screens.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kodiflya.core.plugin.AlgorithmPlugin
 import com.kodiflya.core.plugin.Category
-import com.kodiflya.ui.components.ComplexityCardsRow
+import com.kodiflya.ui.component.ComplexityCardsRow
 import com.kodiflya.ui.theme.AccentGreen
 import com.kodiflya.ui.theme.Background
 import com.kodiflya.ui.theme.ElementDefault

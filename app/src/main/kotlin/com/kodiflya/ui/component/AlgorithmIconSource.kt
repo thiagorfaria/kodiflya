@@ -1,4 +1,4 @@
-package com.kodiflya.ui.icons
+package com.kodiflya.ui.component
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.vector.ImageVector
