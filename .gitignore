@@ -1,0 +1,72 @@
+# ============================================================
+# Gradle
+# ============================================================
+.gradle/
+build/
+**/build/
+
+# Gradle wrapper jar is intentionally NOT ignored (needed for CI without Gradle installed)
+!gradle/wrapper/gradle-wrapper.jar
+
+# ============================================================
+# Android SDK / local machine config
+# ============================================================
+local.properties
+
+# ============================================================
+# IntelliJ IDEA / Android Studio
+# ============================================================
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Keep run configurations and code style if your team shares them
+# Uncomment to commit shared run configs:
+# !.idea/runConfigurations/
+
+# ============================================================
+# Kotlin
+# ============================================================
+.kotlin/
+
+# ============================================================
+# Claude Code
+# ============================================================
+# settings.local.json is machine-specific; CLAUDE.md at root is committed separately
+.claude/
+
+# ============================================================
+# OS artifacts
+# ============================================================
+.DS_Store
+Thumbs.db
+
+# ============================================================
+# APK / AAB / signing artifacts
+# ============================================================
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Signing keystores — never commit private keys
+*.jks
+*.keystore
+
+# ============================================================
+# Profiling & coverage
+# ============================================================
+*.hprof
+*.ec
+
+# ============================================================
+# Prototypes (maintained in a separate repository)
+# ============================================================
+prototypes/
+
+# ============================================================
+# Generated / temp files
+# ============================================================
+captures/
+*.orig
