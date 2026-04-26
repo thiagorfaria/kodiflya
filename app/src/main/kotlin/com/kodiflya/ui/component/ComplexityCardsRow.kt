@@ -23,21 +23,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kodiflya.core.plugin.Complexity
-import com.kodiflya.ui.theme.AccentAmber
-import com.kodiflya.ui.theme.AccentGreen
 import com.kodiflya.ui.theme.SpaceMonoFamily
-import com.kodiflya.ui.theme.Surface
-import com.kodiflya.ui.theme.SurfaceBorder
-import com.kodiflya.ui.theme.TextSecondary
-import com.kodiflya.ui.theme.MetricLabel as MetricLabelColor
 
 @Composable
 fun ComplexityCardsRow(complexity: Complexity) {
     val cards = listOf(
-        Triple("Best", complexity.bestCase, AccentGreen),
-        Triple("Avg", complexity.averageCase, AccentAmber),
-        Triple("Worst", complexity.worstCase, AccentAmber),
-        Triple("Space", complexity.spaceComplexity, TextSecondary),
+        Triple("Best", complexity.bestCase, MaterialTheme.colorScheme.primary),
+        Triple("Avg", complexity.averageCase, MaterialTheme.colorScheme.error),
+        Triple("Worst", complexity.worstCase, MaterialTheme.colorScheme.error),
+        Triple("Space", complexity.spaceComplexity, MaterialTheme.colorScheme.onSurfaceVariant),
     )
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -64,8 +58,8 @@ fun ComplexityCard(
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
-            .background(Surface)
-            .border(1.dp, SurfaceBorder, RoundedCornerShape(8.dp))
+            .background(MaterialTheme.colorScheme.surface)
+            .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
             .padding(horizontal = 6.dp, vertical = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -84,7 +78,7 @@ fun ComplexityCard(
         Text(
             text = category,
             style = MaterialTheme.typography.labelSmall,
-            color = MetricLabelColor,
+            color = MaterialTheme.colorScheme.outlineVariant,
             textAlign = TextAlign.Center,
         )
     }

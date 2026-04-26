@@ -31,15 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kodiflya.core.plugin.AlgorithmPlugin
 import com.kodiflya.core.plugin.Category
 import com.kodiflya.ui.component.ComplexityCardsRow
-import com.kodiflya.ui.theme.AccentGreen
-import com.kodiflya.ui.theme.Background
-import com.kodiflya.ui.theme.ElementDefault
-import com.kodiflya.ui.theme.MetricLabel
 import com.kodiflya.ui.theme.SpaceMonoFamily
-import com.kodiflya.ui.theme.Surface
-import com.kodiflya.ui.theme.SurfaceBorder
-import com.kodiflya.ui.theme.TextPrimary
-import com.kodiflya.ui.theme.TextSecondary
 import java.util.Calendar
 
 @Composable
@@ -52,7 +44,7 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Background)
+            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -81,7 +73,7 @@ private fun HomeHeader(greeting: String) {
         Text(
             text = greeting,
             style = MaterialTheme.typography.labelSmall,
-            color = TextSecondary,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Text(
             text = "Kodiflya",
@@ -91,7 +83,7 @@ private fun HomeHeader(greeting: String) {
                 fontSize = 26.sp,
                 lineHeight = 34.sp,
             ),
-            color = AccentGreen,
+            color = MaterialTheme.colorScheme.primary,
         )
     }
 }
@@ -105,8 +97,8 @@ private fun CategoryCard(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
-            .background(Surface)
-            .border(1.dp, SurfaceBorder, RoundedCornerShape(12.dp))
+            .background(MaterialTheme.colorScheme.surface)
+            .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(12.dp))
             .clickable(onClick = onTap)
             .padding(horizontal = 16.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -116,12 +108,12 @@ private fun CategoryCard(
             Text(
                 text = summary.displayName,
                 style = MaterialTheme.typography.titleMedium,
-                color = TextPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
             )
             Text(
                 text = "${summary.algorithmCount} algorithms",
                 style = MaterialTheme.typography.labelSmall,
-                color = MetricLabel,
+                color = MaterialTheme.colorScheme.outlineVariant,
             )
         }
 
@@ -129,7 +121,7 @@ private fun CategoryCard(
             modifier = Modifier
                 .size(width = 80.dp, height = 48.dp)
                 .clip(RoundedCornerShape(6.dp))
-                .background(ElementDefault.copy(alpha = 0.4f)),
+                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)),
         ) {
             when (summary.category) {
                 Category.SORTING -> SortingMiniVisualization(modifier = Modifier.padding(6.dp))
@@ -149,8 +141,8 @@ private fun ComplexitySpotlightCard(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
-            .background(Surface)
-            .border(1.dp, SurfaceBorder, RoundedCornerShape(12.dp))
+            .background(MaterialTheme.colorScheme.surface)
+            .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(12.dp))
             .clickable(onClick = onTap)
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -162,7 +154,7 @@ private fun ComplexitySpotlightCard(
             Text(
                 text = plugin.displayName,
                 style = MaterialTheme.typography.titleMedium,
-                color = TextPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
             )
             CategoryChip(category = plugin.category)
         }
@@ -172,7 +164,7 @@ private fun ComplexitySpotlightCard(
         Text(
             text = "See it run →",
             style = MaterialTheme.typography.labelSmall,
-            color = AccentGreen,
+            color = MaterialTheme.colorScheme.primary,
         )
     }
 }
@@ -192,10 +184,10 @@ private fun CategoryChip(category: Category) {
             fontSize = 11.sp,
             lineHeight = 16.sp,
         ),
-        color = AccentGreen,
+        color = MaterialTheme.colorScheme.primary,
         modifier = Modifier
             .clip(RoundedCornerShape(4.dp))
-            .background(AccentGreen.copy(alpha = 0.12f))
+            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.12f))
             .padding(horizontal = 6.dp, vertical = 2.dp),
     )
 }

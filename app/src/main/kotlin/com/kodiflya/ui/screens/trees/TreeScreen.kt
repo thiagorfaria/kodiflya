@@ -34,15 +34,6 @@ import com.kodiflya.ui.component.ControlsRow
 import com.kodiflya.ui.component.MetricCard
 import com.kodiflya.ui.component.ScreenHeader
 import com.kodiflya.ui.component.speedLevels
-import com.kodiflya.ui.theme.AccentAmber
-import com.kodiflya.ui.theme.AccentGreen
-import com.kodiflya.ui.theme.AccentPeach
-import com.kodiflya.ui.theme.Background
-import com.kodiflya.ui.theme.ElementDefault
-import com.kodiflya.ui.theme.Surface
-import com.kodiflya.ui.theme.SurfaceBorder
-import com.kodiflya.ui.theme.TextSecondary
-import com.kodiflya.ui.theme.MetricLabel as MetricLabelColor
 
 @Composable
 fun TreeScreen(viewModel: TreeViewModel = hiltViewModel()) {
@@ -56,7 +47,7 @@ fun TreeScreen(viewModel: TreeViewModel = hiltViewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Background)
+            .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
@@ -75,9 +66,9 @@ fun TreeScreen(viewModel: TreeViewModel = hiltViewModel()) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            MetricCard("Visited", metrics.visited.toString(), AccentGreen, Modifier.weight(1f))
-            MetricCard("Total", metrics.totalNodes.toString(), AccentAmber, Modifier.weight(1f))
-            MetricCard("Height", metrics.height.toString(), AccentPeach, Modifier.weight(1f))
+            MetricCard("Visited", metrics.visited.toString(), MaterialTheme.colorScheme.primary, Modifier.weight(1f))
+            MetricCard("Total", metrics.totalNodes.toString(), MaterialTheme.colorScheme.error, Modifier.weight(1f))
+            MetricCard("Height", metrics.height.toString(), MaterialTheme.colorScheme.secondary, Modifier.weight(1f))
         }
 
         Box(
@@ -85,8 +76,8 @@ fun TreeScreen(viewModel: TreeViewModel = hiltViewModel()) {
                 .fillMaxWidth()
                 .weight(1f)
                 .clip(RoundedCornerShape(12.dp))
-                .background(Surface)
-                .border(1.dp, SurfaceBorder, RoundedCornerShape(12.dp))
+                .background(MaterialTheme.colorScheme.surface)
+                .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(12.dp))
                 .padding(12.dp),
         ) {
             TreeCanvas(step = step, modifier = Modifier.fillMaxSize())
@@ -127,7 +118,7 @@ private fun TraversalSequenceRow(
         Text(
             text = "Order:",
             style = MaterialTheme.typography.labelSmall,
-            color = MetricLabelColor,
+            color = MaterialTheme.colorScheme.outlineVariant,
         )
         allValues.forEach { value ->
             val position = sequence.indexOf(value)
@@ -136,14 +127,14 @@ private fun TraversalSequenceRow(
                 modifier = Modifier
                     .size(28.dp)
                     .clip(CircleShape)
-                    .background(if (isVisited) AccentGreen else ElementDefault)
-                    .border(1.dp, if (isVisited) AccentGreen else SurfaceBorder, CircleShape),
+                    .background(if (isVisited) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant)
+                    .border(1.dp, if (isVisited) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline, CircleShape),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = value.toString(),
                     style = MaterialTheme.typography.labelSmall,
-                    color = if (isVisited) Background else TextSecondary,
+                    color = if (isVisited) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }

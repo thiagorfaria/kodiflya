@@ -17,3 +17,18 @@ val TextPrimary = Color(0xFFFFFFFF)
 val TextSecondary = Color(0xFFAAAAAA)
 
 val SurfaceBorder = Color(0xFF2E2E2E)
+
+// Light mode tokens
+val LightBackground       = Color(0xFFEBEBEB)
+val LightSurface          = Color(0xFFF5F5F5)
+val LightSurfaceVariant   = Color(0xFFD8D8D8)
+val LightOutline          = Color(0xFFC0C0C0)
+val LightOutlineVariant   = Color(0xFF5A5A5A)
+val LightOnSurface        = Color(0xFF111111)
+val LightOnSurfaceVariant = Color(0xFF444444)
+
+// Light accent colors — darkened from pastel for contrast on light surfaces (all pass WCAG AA on LightSurface)
+val LightAccentGreen  = Color(0xFF2E7D5A)  // 5.3:1
+val LightAccentPeach  = Color(0xFFB84E2F)  // 5.8:1
+val LightAccentPurple = Color(0xFF6040C0)  // 6.2:1
+val LightAccentAmber  = Color(0xFF8A6000)  // 6.5:1

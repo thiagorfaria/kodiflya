@@ -1,6 +1,7 @@
 package com.kodiflya.ui.screens.graph
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
@@ -10,10 +11,6 @@ import androidx.compose.ui.graphics.Color
 import com.kodiflya.core.plugin.AlgorithmInput
 import com.kodiflya.core.plugin.CellState
 import com.kodiflya.core.plugin.VisualizationStep
-import com.kodiflya.ui.theme.AccentGreen
-import com.kodiflya.ui.theme.AccentPeach
-import com.kodiflya.ui.theme.AccentPurple
-import com.kodiflya.ui.theme.ElementDefault
 
 private const val GRID_SIZE = 9
 private val CellOpen = Color(0xFF252525) // slightly lighter than Surface to show grid structure
@@ -24,6 +21,11 @@ fun GraphCanvas(
     initialGrid: AlgorithmInput.GridInput,
     modifier: Modifier = Modifier,
 ) {
+    val primary = MaterialTheme.colorScheme.primary
+    val secondary = MaterialTheme.colorScheme.secondary
+    val tertiary = MaterialTheme.colorScheme.tertiary
+    val surfaceVariant = MaterialTheme.colorScheme.surfaceVariant
+
     Canvas(modifier = modifier) {
         val gap = 3f
         val cellSize = (minOf(size.width, size.height) - gap * (GRID_SIZE - 1)) / GRID_SIZE
@@ -36,12 +38,12 @@ fun GraphCanvas(
                 val pos = Pair(col, row)
                 val cellState = step?.cells?.get(pos) ?: idleCellState(pos, initialGrid)
                 val color = when (cellState) {
-                    CellState.START -> AccentGreen
-                    CellState.END -> AccentGreen
-                    CellState.WALL -> ElementDefault
-                    CellState.VISITED -> AccentPurple
-                    CellState.FRONTIER -> AccentPeach
-                    CellState.PATH -> AccentGreen
+                    CellState.START -> primary
+                    CellState.END -> primary
+                    CellState.WALL -> surfaceVariant
+                    CellState.VISITED -> tertiary
+                    CellState.FRONTIER -> secondary
+                    CellState.PATH -> primary
                     CellState.OPEN -> CellOpen
                 }
 

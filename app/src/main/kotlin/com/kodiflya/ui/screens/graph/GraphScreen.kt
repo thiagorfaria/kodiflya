@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -29,12 +30,6 @@ import com.kodiflya.ui.component.ControlsRow
 import com.kodiflya.ui.component.MetricCard
 import com.kodiflya.ui.component.ScreenHeader
 import com.kodiflya.ui.component.speedLevels
-import com.kodiflya.ui.theme.AccentAmber
-import com.kodiflya.ui.theme.AccentGreen
-import com.kodiflya.ui.theme.AccentPurple
-import com.kodiflya.ui.theme.Background
-import com.kodiflya.ui.theme.Surface
-import com.kodiflya.ui.theme.SurfaceBorder
 
 @Composable
 fun GraphScreen(viewModel: GraphViewModel = hiltViewModel()) {
@@ -50,7 +45,7 @@ fun GraphScreen(viewModel: GraphViewModel = hiltViewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Background)
+            .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
@@ -69,9 +64,9 @@ fun GraphScreen(viewModel: GraphViewModel = hiltViewModel()) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            MetricCard("Visited", metrics.visited.toString(), AccentPurple, Modifier.weight(1f))
-            MetricCard("Frontier", frontierSize.toString(), AccentAmber, Modifier.weight(1f))
-            MetricCard("Path length", metrics.pathLength.toString(), AccentGreen, Modifier.weight(1f))
+            MetricCard("Visited", metrics.visited.toString(), MaterialTheme.colorScheme.tertiary, Modifier.weight(1f))
+            MetricCard("Frontier", frontierSize.toString(), MaterialTheme.colorScheme.error, Modifier.weight(1f))
+            MetricCard("Path length", metrics.pathLength.toString(), MaterialTheme.colorScheme.primary, Modifier.weight(1f))
         }
 
         Box(
@@ -79,8 +74,8 @@ fun GraphScreen(viewModel: GraphViewModel = hiltViewModel()) {
                 .fillMaxWidth()
                 .weight(1f)
                 .clip(RoundedCornerShape(12.dp))
-                .background(Surface)
-                .border(1.dp, SurfaceBorder, RoundedCornerShape(12.dp))
+                .background(MaterialTheme.colorScheme.surface)
+                .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(12.dp))
                 .padding(12.dp),
         ) {
             GraphCanvas(step = step, initialGrid = initialGrid, modifier = Modifier.fillMaxSize())

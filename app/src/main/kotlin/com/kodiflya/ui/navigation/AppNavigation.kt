@@ -3,6 +3,7 @@ package com.kodiflya.ui.navigation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -23,11 +24,6 @@ import com.kodiflya.ui.screens.graph.GraphScreen
 import com.kodiflya.ui.screens.home.HomeScreen
 import com.kodiflya.ui.screens.sorting.SortingScreen
 import com.kodiflya.ui.screens.trees.TreeScreen
-import com.kodiflya.ui.theme.AccentGreen
-import com.kodiflya.ui.theme.Background
-import com.kodiflya.ui.theme.Surface
-import com.kodiflya.ui.theme.TextPrimary
-import com.kodiflya.ui.theme.MetricLabel as MetricLabelColor
 
 private const val ROUTE_HOME    = "home"
 private const val ROUTE_SORTING = "sort"
@@ -44,17 +40,26 @@ private val navigationTabs = listOf(
 )
 
 @Composable
+private fun navigationBarItemColors() = NavigationBarItemDefaults.colors(
+    selectedIconColor = MaterialTheme.colorScheme.primary,
+    selectedTextColor = MaterialTheme.colorScheme.primary,
+    unselectedIconColor = MaterialTheme.colorScheme.outlineVariant,
+    unselectedTextColor = MaterialTheme.colorScheme.outlineVariant,
+    indicatorColor = MaterialTheme.colorScheme.background,
+)
+
+@Composable
 fun AppNavigation() {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
     Scaffold(
-        containerColor = Background,
+        containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             NavigationBar(
-                containerColor = Surface,
-                contentColor = TextPrimary,
+                containerColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.onSurface,
             ) {
                 navigationTabs.forEach { tab ->
                     val selected = currentDestination?.hierarchy?.any { it.route == tab.route } == true
@@ -71,13 +76,7 @@ fun AppNavigation() {
                         },
                         icon = { Text(tab.icon) },
                         label = { Text(tab.label) },
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = AccentGreen,
-                            selectedTextColor = AccentGreen,
-                            unselectedIconColor = MetricLabelColor,
-                            unselectedTextColor = MetricLabelColor,
-                            indicatorColor = Background,
-                        ),
+                        colors = navigationBarItemColors(),
                     )
                 }
             }
@@ -114,7 +113,7 @@ private fun PlaceholderScreen(label: String) {
     Box(modifier = Modifier.fillMaxSize()) {
         Text(
             text = "$label — coming soon",
-            color = MetricLabelColor,
+            color = MaterialTheme.colorScheme.outlineVariant,
             modifier = Modifier.align(Alignment.Center),
         )
     }

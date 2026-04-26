@@ -1,22 +1,24 @@
 package com.kodiflya.ui.screens.sorting
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import com.kodiflya.core.plugin.VisualizationStep
-import com.kodiflya.ui.theme.AccentGreen
-import com.kodiflya.ui.theme.AccentPeach
-import com.kodiflya.ui.theme.AccentPurple
-import com.kodiflya.ui.theme.ElementDefault
 
 @Composable
 fun SortingCanvas(
     step: VisualizationStep.Sort?,
     modifier: Modifier = Modifier,
 ) {
+    val primary = MaterialTheme.colorScheme.primary
+    val secondary = MaterialTheme.colorScheme.secondary
+    val tertiary = MaterialTheme.colorScheme.tertiary
+    val surfaceVariant = MaterialTheme.colorScheme.surfaceVariant
+
     Canvas(modifier = modifier) {
         val values = step?.values ?: IntArray(10) { it + 1 }
         val n = values.size
@@ -33,12 +35,12 @@ fun SortingCanvas(
             val y = size.height - barHeight
 
             val color = when {
-                step == null -> ElementDefault
-                i in (step.sorted) -> AccentGreen
-                i in (step.swapping) -> AccentPeach
-                i in (step.comparing) -> AccentPeach
-                step.pivot == i -> AccentPurple
-                else -> ElementDefault
+                step == null -> surfaceVariant
+                i in (step.sorted) -> primary
+                i in (step.swapping) -> secondary
+                i in (step.comparing) -> secondary
+                step.pivot == i -> tertiary
+                else -> surfaceVariant
             }
 
             drawRoundRect(

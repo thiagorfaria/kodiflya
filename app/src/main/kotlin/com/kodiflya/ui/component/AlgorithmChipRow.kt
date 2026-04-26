@@ -18,11 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.kodiflya.core.plugin.AlgorithmPlugin
-import com.kodiflya.ui.theme.AccentGreen
-import com.kodiflya.ui.theme.Background
-import com.kodiflya.ui.theme.ElementDefault
-import com.kodiflya.ui.theme.SurfaceBorder
-import com.kodiflya.ui.theme.TextSecondary
 
 @Composable
 fun AlgorithmChipRow(
@@ -41,15 +36,15 @@ fun AlgorithmChipRow(
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(20.dp))
-                    .background(if (isActive) AccentGreen else ElementDefault)
-                    .border(1.dp, if (isActive) AccentGreen else SurfaceBorder, RoundedCornerShape(20.dp))
+                    .background(if (isActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant)
+                    .border(1.dp, if (isActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline, RoundedCornerShape(20.dp))
                     .clickable { onSelect(index) }
                     .padding(horizontal = 14.dp, vertical = 6.dp),
             ) {
                 Text(
                     text = plugin.displayName,
                     style = MaterialTheme.typography.labelMedium,
-                    color = if (isActive) Background else TextSecondary,
+                    color = if (isActive) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }

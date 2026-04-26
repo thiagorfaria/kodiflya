@@ -16,9 +16,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.kodiflya.ui.theme.Surface
-import com.kodiflya.ui.theme.SurfaceBorder
-import com.kodiflya.ui.theme.MetricLabel as MetricLabelColor
 
 @Composable
 fun MetricCard(
@@ -30,8 +27,8 @@ fun MetricCard(
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
-            .background(Surface)
-            .border(1.dp, SurfaceBorder, RoundedCornerShape(8.dp))
+            .background(MaterialTheme.colorScheme.surface)
+            .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
             .padding(horizontal = 8.dp, vertical = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -45,7 +42,7 @@ fun MetricCard(
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            color = MetricLabelColor,
+            color = MaterialTheme.colorScheme.outlineVariant,
             textAlign = TextAlign.Center,
         )
     }

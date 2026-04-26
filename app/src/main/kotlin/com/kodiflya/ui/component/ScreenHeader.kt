@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import com.kodiflya.ui.theme.AccentGreen
-import com.kodiflya.ui.theme.TextSecondary
 
 @Composable
 fun ScreenHeader(algorithmName: String) {
@@ -13,12 +11,12 @@ fun ScreenHeader(algorithmName: String) {
         Text(
             text = "Kodiflya",
             style = MaterialTheme.typography.headlineMedium,
-            color = AccentGreen,
+            color = MaterialTheme.colorScheme.primary,
         )
         Text(
             text = algorithmName,
             style = MaterialTheme.typography.titleMedium,
-            color = TextSecondary,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }

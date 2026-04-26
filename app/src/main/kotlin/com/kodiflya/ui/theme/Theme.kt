@@ -6,7 +6,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val KodiflyaDarkColorScheme = darkColorScheme(
@@ -15,6 +17,7 @@ private val KodiflyaDarkColorScheme = darkColorScheme(
     secondary = AccentPeach,
     onSecondary = Background,
     tertiary = AccentPurple,
+    error = AccentAmber,
     background = Background,
     onBackground = TextPrimary,
     surface = Surface,
@@ -22,15 +25,31 @@ private val KodiflyaDarkColorScheme = darkColorScheme(
     surfaceVariant = ElementDefault,
     onSurfaceVariant = TextSecondary,
     outline = SurfaceBorder,
+    outlineVariant = MetricLabel,
 )
 
-// Tip: When you're ready for Light Mode, define KodiflyaLightColorScheme here.
+private val KodiflyaLightColorScheme = lightColorScheme(
+    primary           = LightAccentGreen,
+    onPrimary         = Color.White,
+    secondary         = LightAccentPeach,
+    onSecondary       = Color.White,
+    tertiary          = LightAccentPurple,
+    error             = LightAccentAmber,
+    background        = LightBackground,
+    onBackground      = LightOnSurface,
+    surface           = LightSurface,
+    onSurface         = LightOnSurface,
+    surfaceVariant    = LightSurfaceVariant,
+    onSurfaceVariant  = LightOnSurfaceVariant,
+    outline           = LightOutline,
+    outlineVariant    = LightOutlineVariant,
+)
 
 @Composable
 fun KodiflyaTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -39,7 +58,7 @@ fun KodiflyaTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
         darkTheme -> KodiflyaDarkColorScheme
-        else -> KodiflyaDarkColorScheme // Falling back to Dark for now to avoid breaking the UI
+        else -> KodiflyaLightColorScheme
     }
 
     MaterialTheme(

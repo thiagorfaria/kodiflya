@@ -20,12 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.kodiflya.core.plugin.PlaybackStatus
-import com.kodiflya.ui.component.KodiflyaIcons
-import com.kodiflya.ui.theme.AccentGreen
-import com.kodiflya.ui.theme.Background
-import com.kodiflya.ui.theme.ElementDefault
-import com.kodiflya.ui.theme.TextSecondary
-import com.kodiflya.ui.theme.MetricLabel as MetricLabelColor
 
 val speedLevels = listOf(0.5f, 1f, 2f, 4f, 8f)
 val speedLabels = listOf("0.5×", "1×", "2×", "4×", "8×")
@@ -50,14 +44,14 @@ fun ControlsRow(
             modifier = Modifier
                 .size(48.dp)
                 .clip(CircleShape)
-                .background(AccentGreen)
+                .background(MaterialTheme.colorScheme.primary)
                 .clickable(onClick = if (isPlaying) onPause else onPlay),
             contentAlignment = Alignment.Center,
         ) {
             Icon(
                 imageVector = if (isPlaying) KodiflyaIcons.Pause else KodiflyaIcons.Play,
                 contentDescription = if (isPlaying) "Pause" else "Play",
-                tint = Background,
+                tint = MaterialTheme.colorScheme.background,
                 modifier = Modifier.size(24.dp),
             )
         }
@@ -67,13 +61,13 @@ fun ControlsRow(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                Text("0.5×", style = MaterialTheme.typography.labelSmall, color = MetricLabelColor)
+                Text("0.5×", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outlineVariant)
                 Text(
                     speedLabels[speedIndex.toInt().coerceIn(0, speedLabels.lastIndex)],
                     style = MaterialTheme.typography.labelSmall,
-                    color = AccentGreen,
+                    color = MaterialTheme.colorScheme.primary,
                 )
-                Text("8×", style = MaterialTheme.typography.labelSmall, color = MetricLabelColor)
+                Text("8×", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outlineVariant)
             }
             Slider(
                 value = speedIndex,
@@ -81,9 +75,9 @@ fun ControlsRow(
                 valueRange = 0f..4f,
                 steps = 3,
                 colors = SliderDefaults.colors(
-                    thumbColor = AccentGreen,
-                    activeTrackColor = AccentGreen,
-                    inactiveTrackColor = ElementDefault,
+                    thumbColor = MaterialTheme.colorScheme.primary,
+                    activeTrackColor = MaterialTheme.colorScheme.primary,
+                    inactiveTrackColor = MaterialTheme.colorScheme.surfaceVariant,
                 ),
             )
         }
@@ -92,14 +86,14 @@ fun ControlsRow(
             modifier = Modifier
                 .size(48.dp)
                 .clip(CircleShape)
-                .background(ElementDefault)
+                .background(MaterialTheme.colorScheme.surfaceVariant)
                 .clickable(onClick = onReset),
             contentAlignment = Alignment.Center,
         ) {
             Icon(
                 imageVector = KodiflyaIcons.Reset,
                 contentDescription = "Reset",
-                tint = TextSecondary,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(24.dp),
             )
         }

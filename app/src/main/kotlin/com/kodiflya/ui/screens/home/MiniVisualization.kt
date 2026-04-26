@@ -7,6 +7,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -15,16 +16,15 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import com.kodiflya.ui.theme.AccentAmber
-import com.kodiflya.ui.theme.AccentGreen
-import com.kodiflya.ui.theme.AccentPurple
-import com.kodiflya.ui.theme.ElementDefault
 
 private val highlighted = setOf(2, 5)
 private val baseHeights = listOf(0.55f, 0.30f, 0.80f, 0.45f, 0.65f, 0.90f, 0.35f, 0.70f)
 
 @Composable
 fun SortingMiniVisualization(modifier: Modifier = Modifier) {
+    val primary = MaterialTheme.colorScheme.primary
+    val surfaceVariant = MaterialTheme.colorScheme.surfaceVariant
+
     val transition = rememberInfiniteTransition(label = "sort")
     val animatedHeights = baseHeights.mapIndexed { i, base ->
         val target = if (base > 0.5f) base - 0.25f else base + 0.25f
@@ -45,7 +45,7 @@ fun SortingMiniVisualization(modifier: Modifier = Modifier) {
         val barWidth = (size.width - gap * (barCount - 1)) / barCount
         animatedHeights.forEachIndexed { i, h ->
             val barH = size.height * h.coerceIn(0.05f, 1f)
-            val color = if (i in highlighted) AccentGreen else ElementDefault
+            val color = if (i in highlighted) primary else surfaceVariant
             drawBar(
                 x = i * (barWidth + gap),
                 barWidth = barWidth,
@@ -77,6 +77,9 @@ private val edges = listOf(0 to 1, 0 to 2, 1 to 3, 2 to 3, 3 to 4)
 
 @Composable
 fun GraphMiniVisualization(modifier: Modifier = Modifier) {
+    val tertiary = MaterialTheme.colorScheme.tertiary
+    val surfaceVariant = MaterialTheme.colorScheme.surfaceVariant
+
     val transition = rememberInfiniteTransition(label = "graph")
     val pulseAlpha by transition.animateFloat(
         initialValue = 0.4f,
@@ -94,7 +97,7 @@ fun GraphMiniVisualization(modifier: Modifier = Modifier) {
 
         edges.forEach { (a, b) ->
             drawLine(
-                color = ElementDefault,
+                color = surfaceVariant,
                 start = positions[a],
                 end = positions[b],
                 strokeWidth = 1.5f,
@@ -102,7 +105,7 @@ fun GraphMiniVisualization(modifier: Modifier = Modifier) {
         }
 
         positions.forEachIndexed { i, pos ->
-            val color = if (i == 0) AccentPurple.copy(alpha = pulseAlpha) else ElementDefault
+            val color = if (i == 0) tertiary.copy(alpha = pulseAlpha) else surfaceVariant
             drawCircle(color = color, radius = nodeRadius, center = pos)
         }
     }
@@ -119,6 +122,9 @@ private val treeEdges = listOf(0 to 1, 0 to 2, 1 to 3, 1 to 4)
 
 @Composable
 fun TreeMiniVisualization(modifier: Modifier = Modifier) {
+    val error = MaterialTheme.colorScheme.error
+    val surfaceVariant = MaterialTheme.colorScheme.surfaceVariant
+
     val transition = rememberInfiniteTransition(label = "tree")
     val phase by transition.animateFloat(
         initialValue = 0f,
@@ -137,7 +143,7 @@ fun TreeMiniVisualization(modifier: Modifier = Modifier) {
 
         treeEdges.forEach { (a, b) ->
             drawLine(
-                color = ElementDefault,
+                color = surfaceVariant,
                 start = positions[a],
                 end = positions[b],
                 strokeWidth = 1.5f,
@@ -145,7 +151,7 @@ fun TreeMiniVisualization(modifier: Modifier = Modifier) {
         }
 
         positions.forEachIndexed { i, pos ->
-            val color = if (i == activeIndex) AccentAmber else ElementDefault
+            val color = if (i == activeIndex) error else surfaceVariant
             drawCircle(color = color, radius = nodeRadius, center = pos)
         }
     }

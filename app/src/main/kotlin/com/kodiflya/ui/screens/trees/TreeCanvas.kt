@@ -1,9 +1,11 @@
 package com.kodiflya.ui.screens.trees
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -17,11 +19,6 @@ import com.kodiflya.algorithms.trees.EDGES
 import com.kodiflya.algorithms.trees.NODE_POSITIONS
 import com.kodiflya.core.plugin.NodeState
 import com.kodiflya.core.plugin.VisualizationStep
-import com.kodiflya.ui.theme.AccentGreen
-import com.kodiflya.ui.theme.AccentPeach
-import com.kodiflya.ui.theme.Background
-import com.kodiflya.ui.theme.ElementDefault
-import com.kodiflya.ui.theme.SurfaceBorder
 
 @Composable
 fun TreeCanvas(
@@ -29,38 +26,41 @@ fun TreeCanvas(
     modifier: Modifier = Modifier,
 ) {
     val textMeasurer = rememberTextMeasurer()
+    val primary = MaterialTheme.colorScheme.primary
+    val secondary = MaterialTheme.colorScheme.secondary
+    val background = MaterialTheme.colorScheme.background
+    val surfaceVariant = MaterialTheme.colorScheme.surfaceVariant
+    val outline = MaterialTheme.colorScheme.outline
 
     Canvas(modifier = modifier) {
         val nodeRadius = minOf(size.width, size.height) * 0.075f
 
-        // Draw edges first (behind nodes)
         EDGES.forEach { (parent, child) ->
             val (px, py) = NODE_POSITIONS[parent]!!
             val (cx, cy) = NODE_POSITIONS[child]!!
             drawLine(
-                color = SurfaceBorder,
+                color = outline,
                 start = Offset(px * size.width, py * size.height),
                 end = Offset(cx * size.width, cy * size.height),
                 strokeWidth = 2f,
             )
         }
 
-        // Draw nodes
         NODE_POSITIONS.forEach { (value, pos) ->
             val (fx, fy) = pos
             val center = Offset(fx * size.width, fy * size.height)
             val nodeState = step?.nodeStates?.get(value) ?: NodeState.DEFAULT
 
             val fillColor = when (nodeState) {
-                NodeState.ACTIVE -> AccentPeach
-                NodeState.VISITED -> AccentGreen
-                NodeState.DEFAULT -> ElementDefault
+                NodeState.ACTIVE -> secondary
+                NodeState.VISITED -> primary
+                NodeState.DEFAULT -> surfaceVariant
             }
 
             drawCircle(color = fillColor, radius = nodeRadius, center = center, style = Fill)
-            drawCircle(color = SurfaceBorder, radius = nodeRadius, center = center, style = Stroke(width = 2f))
+            drawCircle(color = outline, radius = nodeRadius, center = center, style = Stroke(width = 2f))
 
-            drawNodeLabel(textMeasurer, value.toString(), center, nodeRadius, nodeState)
+            drawNodeLabel(textMeasurer, value.toString(), center, nodeRadius, nodeState, primary, background)
         }
     }
 }
@@ -71,10 +71,12 @@ private fun DrawScope.drawNodeLabel(
     center: Offset,
     nodeRadius: Float,
     state: NodeState,
+    primary: Color,
+    background: Color,
 ) {
     val textColor = when (state) {
-        NodeState.ACTIVE, NodeState.VISITED -> Background
-        NodeState.DEFAULT -> AccentGreen
+        NodeState.ACTIVE, NodeState.VISITED -> background
+        NodeState.DEFAULT -> primary
     }
     val style = TextStyle(fontSize = (nodeRadius * 0.7f / density).sp, fontWeight = FontWeight.Bold, color = textColor)
     val measured = measurer.measure(text, style)

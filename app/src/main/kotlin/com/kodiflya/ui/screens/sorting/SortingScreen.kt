@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -28,12 +29,6 @@ import com.kodiflya.ui.component.ControlsRow
 import com.kodiflya.ui.component.MetricCard
 import com.kodiflya.ui.component.ScreenHeader
 import com.kodiflya.ui.component.speedLevels
-import com.kodiflya.ui.theme.AccentAmber
-import com.kodiflya.ui.theme.AccentGreen
-import com.kodiflya.ui.theme.AccentPeach
-import com.kodiflya.ui.theme.Background
-import com.kodiflya.ui.theme.Surface
-import com.kodiflya.ui.theme.SurfaceBorder
 
 @Composable
 fun SortingScreen(viewModel: SortingViewModel = hiltViewModel()) {
@@ -47,7 +42,7 @@ fun SortingScreen(viewModel: SortingViewModel = hiltViewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Background)
+            .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
@@ -66,9 +61,9 @@ fun SortingScreen(viewModel: SortingViewModel = hiltViewModel()) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            MetricCard("Comparisons", metrics.comparisons.toString(), AccentPeach, Modifier.weight(1f))
-            MetricCard("Swaps", metrics.swaps.toString(), AccentGreen, Modifier.weight(1f))
-            MetricCard("Array reads", metrics.arrayReads.toString(), AccentAmber, Modifier.weight(1f))
+            MetricCard("Comparisons", metrics.comparisons.toString(), MaterialTheme.colorScheme.secondary, Modifier.weight(1f))
+            MetricCard("Swaps", metrics.swaps.toString(), MaterialTheme.colorScheme.primary, Modifier.weight(1f))
+            MetricCard("Array reads", metrics.arrayReads.toString(), MaterialTheme.colorScheme.error, Modifier.weight(1f))
         }
 
         Box(
@@ -76,8 +71,8 @@ fun SortingScreen(viewModel: SortingViewModel = hiltViewModel()) {
                 .fillMaxWidth()
                 .weight(1f)
                 .clip(RoundedCornerShape(12.dp))
-                .background(Surface)
-                .border(1.dp, SurfaceBorder, RoundedCornerShape(12.dp))
+                .background(MaterialTheme.colorScheme.surface)
+                .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(12.dp))
                 .padding(12.dp),
         ) {
             SortingCanvas(

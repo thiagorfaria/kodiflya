@@ -9,7 +9,7 @@ Kodiflya is a native Android app that visualizes algorithms for interview prepar
 | Layer | Technology | Version |
 |---|---|---|
 | Language | Kotlin | 2.0+ |
-| UI | Jetpack Compose | BOM latest stable |
+| UI | Jetpack Compose + Material Icons Extended | BOM latest stable |
 | DI | Hilt | 2.51+ |
 | Async | Coroutines + Flow | kotlinx-coroutines 1.8+ |
 | Architecture | MVVM + Clean Architecture | — |
@@ -30,7 +30,7 @@ Kodiflya is a native Android app that visualizes algorithms for interview prepar
 │  LOGIC LAYER                                            │
 │  AlgorithmPlugin interface                              │
 │  Each algorithm: one file, plain Kotlin, zero UI deps   │
-│  Produces: Sequence<VizStep>                            │
+│  Produces: Sequence<VisualizationStep>                  │
 │  RULE: zero import of android.* or androidx.*           │
 └─────────────────────┬───────────────────────────────────┘
                       │ plugin.steps()
@@ -38,14 +38,14 @@ Kodiflya is a native Android app that visualizes algorithms for interview prepar
 │  ENGINE LAYER                                           │
 │  PlaybackEngine                                         │
 │  Controls: speed, play/pause/reset                      │
-│  Emits: StateFlow<VizState>                             │
+│  Emits: StateFlow<VisualizationState>                   │
 │  RULE: knows AlgorithmPlugin interface only             │
 │         no knowledge of BubbleSort, BFS, etc.           │
 └─────────────────────┬───────────────────────────────────┘
-                      │ StateFlow<VizState>
+                      │ StateFlow<VisualizationState>
 ┌─────────────────────▼───────────────────────────────────┐
 │  UI LAYER                                               │
-│  Composables render VizState                            │
+│  Composables render VisualizationState                  │
 │  RULE: no switch/when on algorithm names                │
 │         no direct instantiation of algorithm classes    │
 └─────────────────────────────────────────────────────────┘
@@ -60,13 +60,13 @@ Kodiflya is a native Android app that visualizes algorithms for interview prepar
 | Direction | Rule | Reason |
 |---|---|---|
 | Logic → Engine | ALLOWED | Engine calls `plugin.steps()` via interface |
-| Engine → UI | ALLOWED | Via `StateFlow<VizState>` |
+| Engine → UI | ALLOWED | Via `StateFlow<VisualizationState>` |
 | Logic → UI | **FORBIDDEN** | No compose imports in logic classes |
 | UI → Logic (direct) | **FORBIDDEN** | UI never instantiates algorithm classes |
 | Engine → specific algorithm class | **FORBIDDEN** | Engine only knows `AlgorithmPlugin` interface |
 | ViewModel → specific algorithm | **FORBIDDEN** | ViewModel receives `AlgorithmPlugin` via Hilt injection |
 
-**Registry pattern:** Hilt provides `Set<@JvmSuppressWildcards AlgorithmPlugin>` via multibinding. ViewModel selects from the set by ID; it never imports individual algorithm classes.
+**Registry pattern:** Hilt provides `Set<@JvmSuppressWildcards AlgorithmPlugin>` via multibinding. ViewModel filters the set by `Category`; it never imports individual algorithm classes.
 
 ---
 
@@ -120,11 +120,11 @@ Kodiflya is a native Android app that visualizes algorithms for interview prepar
 
 4. **No algorithm enum or `when`-chain in ViewModel or Engine.** If a ViewModel switches on algorithm name, the plugin contract is violated.
 
-5. **Prototype fidelity.** The HTML prototypes in `/prototypes/` are the visual and interaction reference. Match their color states, animation timing, and metrics panel structure.
+5. **Prototype fidelity.** The HTML prototypes (maintained in a separate repository) are the visual and interaction reference. Match their color states, animation timing, and metrics panel structure.
 
-6. **Step granularity convention.** One `VizStep` = one atomic decision a human would narrate aloud ("comparing index 2 and 3", "marking cell (3,4) visited"). Consistent granularity makes the speed slider coherent across all algorithms. Enforced in `steps()` implementation, not in the engine.
+6. **Step granularity convention.** One `VisualizationStep` = one atomic decision a human would narrate aloud ("comparing index 2 and 3", "marking cell (3,4) visited"). Consistent granularity makes the speed slider coherent across all algorithms. Enforced in `steps()` implementation, not in the engine.
 
-7. **VizStep must be self-sufficient for stateless rendering.** Each `VizStep` must carry enough data for a Composable to draw a complete, correct frame without replaying prior steps. For sorting: full array snapshot per step. For grid: full 9×9 cell state map. For tree: full node state map + topology. Validated with JVM tests before any canvas Composable is written.
+7. **`VisualizationStep` must be self-sufficient for stateless rendering.** Each `VisualizationStep` must carry enough data for a Composable to draw a complete, correct frame without replaying prior steps. For sorting: full array snapshot per step. For grid: full 9×9 cell state map. For tree: full node state map + topology. Validated with JVM tests before any canvas Composable is written.
 
 8. **Metrics panel driven by plugin metadata, not screen-hardcoded labels.** `AlgorithmPlugin.metricLabels` declares the 3 metric slot names; the screen renders whatever the plugin declared. Never hardcode "Comparisons / Swaps / Passes" in a Composable.
 
@@ -161,19 +161,40 @@ Kodiflya is a native Android app that visualizes algorithms for interview prepar
 
 ## Visual Language (from validated prototypes)
 
-| Token | Value |
-|---|---|
-| Background | `#0D0D0D` |
-| Surface | `#1A1A1A` |
-| Accent green (sorted/visited/positive) | `#7CB99A` |
-| Accent peach (comparing/visiting/active) | `#E8917A` |
-| Accent purple (pivot/height metric) | `#B8A4E8` |
-| Accent amber (complexity O(n²) / reads) | `#E8C47A` |
-| Default element | `#2E2E2E` |
-| Font: metrics | Space Mono |
-| Font: labels | DM Sans |
+| Token | Value | `MaterialTheme.colorScheme` slot |
+|---|---|---|
+| Background | `#0D0D0D` | `background` |
+| Surface | `#1A1A1A` | `surface` |
+| Accent green (sorted/visited/positive) | `#7CB99A` | `primary` |
+| Accent peach (comparing/visiting/active) | `#E8917A` | `secondary` |
+| Accent purple (pivot/height metric) | `#B8A4E8` | `tertiary` |
+| Accent amber (complexity O(n²) / reads) | `#E8C47A` | `error` |
+| Default element | `#2E2E2E` | `surfaceVariant` |
+| Text primary | `#FFFFFF` | `onSurface` |
+| Text secondary | `#AAAAAA` | `onSurfaceVariant` |
+| Metric label | `#888888` | `outlineVariant` |
+| Surface border | `#2E2E2E` | `outline` |
+| Font: metrics | Space Mono | — |
+| Font: labels | DM Sans | — |
 
 **Animation timing:** 0.1–0.2s ease transitions for element state changes. Speed slider controls step delay (400ms at 0.5× → 8ms at 8×).
+
+### Theme rules
+
+1. **Never import raw color tokens in UI files.** Composables must read colors exclusively through `MaterialTheme.colorScheme.*`. Raw token imports (`AccentGreen`, `Background`, etc.) are forbidden in any file under `ui/`.
+
+2. **Dynamic color is disabled.** `KodiflyaTheme` sets `dynamicColor = false`. The app's visualization semantics depend on fixed, predictable colors — green always means "sorted/visited", amber always means "complexity/reads". Dynamic color would override these with wallpaper-derived colors, breaking the visual contract.
+
+3. **Canvas composables capture colors before the `Canvas { }` block.** `DrawScope` is not `@Composable`, so theme colors must be read in the composable body and passed as local variables into the drawing lambda:
+   ```kotlin
+   @Composable
+   fun SortingCanvas(...) {
+       val primary = MaterialTheme.colorScheme.primary  // read here
+       Canvas(modifier) {
+           drawRoundRect(color = primary, ...)           // use here
+       }
+   }
+   ```
 
 ---
 
@@ -199,18 +220,23 @@ app/
       kotlin/com/kodiflya/
         core/
           plugin/   AlgorithmPlugin.kt, VisualizationStep.kt, VisualizationState.kt
-          engine/   PlaybackEngine.kt
+          engine/   PlaybackEngine.kt, PlaybackEngineFactory.kt
         algorithms/
           sorting/  BubbleSort.kt, InsertionSort.kt, MergeSort.kt, QuickSort.kt
           graph/    BFS.kt, DFS.kt, Dijkstra.kt
           trees/    BSTInorder.kt, BSTPreorder.kt, BSTPostorder.kt
         di/         AlgorithmModule.kt (Hilt multibinding registry)
         ui/
-          home/     HomeScreen.kt, HomeViewModel.kt
-          sorting/  SortingScreen.kt, SortingViewModel.kt
-          graph/    GraphScreen.kt, GraphViewModel.kt
-          trees/    TreesScreen.kt, TreesViewModel.kt
-          theme/    Theme.kt, Color.kt, Type.kt
-    test/           (mirrors main — unit tests)
-    androidTest/    (Compose UI tests)
+          screens/
+            home/     HomeScreen.kt, HomeViewModel.kt, MiniVisualization.kt
+            sorting/  SortingScreen.kt, SortingViewModel.kt, SortingCanvas.kt
+            graph/    GraphScreen.kt, GraphViewModel.kt, GraphCanvas.kt
+            trees/    TreeScreen.kt, TreeViewModel.kt, TreeCanvas.kt
+          navigation/ AppNavigation.kt
+          component/  AlgorithmChipRow.kt, ComplexityCardsRow.kt, ControlsRow.kt,
+                      MetricCard.kt, ScreenHeader.kt,
+                      KodiflyaIcons.kt, AlgorithmIconSource.kt, AlgorithmIconRegistry.kt
+          theme/      Theme.kt, Color.kt, Type.kt
+    test/             (mirrors main — unit tests)
+    androidTest/      (Compose UI tests)
 ```
