@@ -95,6 +95,7 @@ fun SortingScreen(viewModel: SortingViewModel = hiltViewModel()) {
             onPlay = viewModel::play,
             onPause = viewModel::pause,
             onReset = viewModel::reset,
+            onReplay = viewModel::replay,
             onSpeedChange = { index ->
                 speedIndex = index
                 val multiplier = speedLevels[index.toInt().coerceIn(0, speedLevels.lastIndex)]

@@ -31,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kodiflya.core.plugin.AlgorithmPlugin
 import com.kodiflya.core.plugin.Category
 import com.kodiflya.ui.component.ComplexityCardsRow
+import com.kodiflya.ui.component.KodiflyaLogoMark
 import com.kodiflya.ui.theme.SpaceMonoFamily
 import java.util.Calendar
 
@@ -69,22 +70,28 @@ fun HomeScreen(
 
 @Composable
 private fun HomeHeader(greeting: String) {
-    Column {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(
             text = greeting,
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        Text(
-            text = "Kodiflya",
-            style = TextStyle(
-                fontFamily = SpaceMonoFamily,
-                fontWeight = FontWeight.Bold,
-                fontSize = 26.sp,
-                lineHeight = 34.sp,
-            ),
-            color = MaterialTheme.colorScheme.primary,
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            KodiflyaLogoMark(size = 44.dp)
+            Text(
+                text = "kodiflya",
+                style = TextStyle(
+                    fontFamily = SpaceMonoFamily,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 26.sp,
+                    lineHeight = 34.sp,
+                ),
+                color = MaterialTheme.colorScheme.primary,
+            )
+        }
     }
 }
 

@@ -5,14 +5,14 @@ import com.kodiflya.core.plugin.Category
 object AlgorithmIconRegistry {
 
     fun iconFor(category: Category): AlgorithmIconSource = when (category) {
-        Category.SORTING -> TODO("Provide ic_algo_sorting.xml drawable asset")
-        Category.GRAPH   -> TODO("Provide ic_algo_graph.xml drawable asset")
-        Category.TREES   -> TODO("Provide ic_algo_trees.xml drawable asset")
+        Category.SORTING -> AlgorithmIconSource.Vector(NavigationIcons.SortOutlined)
+        Category.GRAPH   -> AlgorithmIconSource.Vector(NavigationIcons.GraphOutlined)
+        Category.TREES   -> AlgorithmIconSource.Vector(NavigationIcons.TreesOutlined)
     }
 
     fun selectedIconFor(category: Category): AlgorithmIconSource = when (category) {
-        Category.SORTING -> TODO("Provide ic_algo_sorting_filled.xml drawable asset")
-        Category.GRAPH   -> TODO("Provide ic_algo_graph_filled.xml drawable asset")
-        Category.TREES   -> TODO("Provide ic_algo_trees_filled.xml drawable asset")
+        Category.SORTING -> AlgorithmIconSource.Vector(NavigationIcons.SortFilled)
+        Category.GRAPH   -> AlgorithmIconSource.Vector(NavigationIcons.GraphFilled)
+        Category.TREES   -> AlgorithmIconSource.Vector(NavigationIcons.TreesFilled)
     }
 }

@@ -4,7 +4,31 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
+
+    <!--
+        Terminal f(x) mark — MarkV3 from logo.jsx
+        Scaled 2.6× from the 24-unit viewBox (≈65% of original), centered at (54, 54).
+        Transform: x_new = 23.58 + x_old × 2.6,  y_new = 18.9 + y_old × 2.6
+        Bounding box: x 40.2–67.8  y 33.2–74.8  →  center (54, 54) ✓
+    -->
+
+    <!-- Cursor bar: x=6.4 y=5.5 w=2.6 h=13 rx=0.6  →  x=40.22 y=33.2 w=6.76 h=33.8 rx=1.56 -->
     <path
         android:fillColor="#7CB99A"
-        android:pathData="M54,20 L80,75 L28,75 Z"/>
+        android:pathData="M41.78,33.2 H45.42 A1.56,1.56,0,0,1,46.98,34.76 V65.44 A1.56,1.56,0,0,1,45.42,67 H41.78 A1.56,1.56,0,0,1,40.22,65.44 V34.76 A1.56,1.56,0,0,1,41.78,33.2 Z"/>
+
+    <!-- Caret <: M17 6.2 L11 12 L17 17.8  →  M67.78 35.02 L52.18 50.1 L67.78 65.18, stroke 6.76 -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#7CB99A"
+        android:strokeWidth="6.76"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M67.78,35.02 L52.18,50.1 L67.78,65.18"/>
+
+    <!-- Baseline: x=5 y=20.6 w=14 h=0.9 rx=0.45  →  x=36.58 y=72.46 w=36.4 h=2.34 rx=1.17, 35% opacity -->
+    <path
+        android:fillColor="#597CB99A"
+        android:pathData="M37.75,72.46 H71.81 A1.17,1.17,0,0,1,72.98,73.63 V73.63 A1.17,1.17,0,0,1,71.81,74.8 H37.75 A1.17,1.17,0,0,1,36.58,73.63 V73.63 A1.17,1.17,0,0,1,37.75,72.46 Z"/>
+
 </vector>

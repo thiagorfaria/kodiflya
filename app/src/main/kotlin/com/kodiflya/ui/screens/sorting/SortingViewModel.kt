@@ -43,6 +43,7 @@ class SortingViewModel @Inject constructor(
     fun play() = engine.play()
     fun pause() = engine.pause()
     fun reset() = engine.reset()
+    fun replay() { engine.reset(); engine.play() }
     fun setSpeed(multiplier: Float) = engine.setSpeed(multiplier)
 
     override fun onCleared() {

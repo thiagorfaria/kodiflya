@@ -11,6 +11,7 @@ navigation = "2.8.4"
 activity-compose = "1.9.3"
 junit-jupiter = "5.10.2"
 mockk = "1.13.12"
+androidx-test-ext = "1.2.1"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -49,8 +50,13 @@ hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-com
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
 
-# Testing
+# Testing — unit
 junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
 junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher", version = "1.10.2" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+
+# Testing — instrumented (Compose UI)
+compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext" }

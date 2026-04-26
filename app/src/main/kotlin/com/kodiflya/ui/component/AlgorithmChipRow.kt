@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.kodiflya.core.plugin.AlgorithmPlugin
 
@@ -35,6 +36,7 @@ fun AlgorithmChipRow(
             val isActive = index == activeIndex
             Box(
                 modifier = Modifier
+                    .testTag("algorithm_chip_$index")
                     .clip(RoundedCornerShape(20.dp))
                     .background(if (isActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant)
                     .border(1.dp, if (isActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline, RoundedCornerShape(20.dp))

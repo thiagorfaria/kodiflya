@@ -17,7 +17,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.kodiflya.core.plugin.PlaybackStatus
 
@@ -32,8 +35,27 @@ fun ControlsRow(
     onPause: () -> Unit,
     onReset: () -> Unit,
     onSpeedChange: (Float) -> Unit,
+    onReplay: () -> Unit,
 ) {
     val isPlaying = playbackStatus == PlaybackStatus.PLAYING
+    val isDone = playbackStatus == PlaybackStatus.DONE
+    val isResetActive = playbackStatus == PlaybackStatus.PLAYING || playbackStatus == PlaybackStatus.PAUSED
+
+    val primaryAction: () -> Unit = when {
+        isPlaying -> onPause
+        isDone -> onReplay
+        else -> onPlay
+    }
+    val primaryIcon = when {
+        isPlaying -> KodiflyaIcons.Pause
+        isDone -> KodiflyaIcons.Replay
+        else -> KodiflyaIcons.Play
+    }
+    val primaryContentDescription = when {
+        isPlaying -> "Pause"
+        isDone -> "Replay"
+        else -> "Play"
+    }
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -45,12 +67,12 @@ fun ControlsRow(
                 .size(48.dp)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.primary)
-                .clickable(onClick = if (isPlaying) onPause else onPlay),
+                .clickable(onClick = primaryAction),
             contentAlignment = Alignment.Center,
         ) {
             Icon(
-                imageVector = if (isPlaying) KodiflyaIcons.Pause else KodiflyaIcons.Play,
-                contentDescription = if (isPlaying) "Pause" else "Play",
+                imageVector = primaryIcon,
+                contentDescription = primaryContentDescription,
                 tint = MaterialTheme.colorScheme.background,
                 modifier = Modifier.size(24.dp),
             )
@@ -74,6 +96,7 @@ fun ControlsRow(
                 onValueChange = onSpeedChange,
                 valueRange = 0f..4f,
                 steps = 3,
+                modifier = Modifier.semantics { contentDescription = "Speed slider" },
                 colors = SliderDefaults.colors(
                     thumbColor = MaterialTheme.colorScheme.primary,
                     activeTrackColor = MaterialTheme.colorScheme.primary,
@@ -85,9 +108,10 @@ fun ControlsRow(
         Box(
             modifier = Modifier
                 .size(48.dp)
+                .alpha(if (isResetActive) 1f else 0.3f)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.surfaceVariant)
-                .clickable(onClick = onReset),
+                .clickable(enabled = isResetActive, onClick = onReset),
             contentAlignment = Alignment.Center,
         ) {
             Icon(
