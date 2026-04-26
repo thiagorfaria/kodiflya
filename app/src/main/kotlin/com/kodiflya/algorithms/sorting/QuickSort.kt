@@ -4,6 +4,7 @@ import com.kodiflya.core.plugin.AlgorithmInput
 import com.kodiflya.core.plugin.AlgorithmPlugin
 import com.kodiflya.core.plugin.Category
 import com.kodiflya.core.plugin.ColorRole
+import com.kodiflya.core.plugin.BigO
 import com.kodiflya.core.plugin.Complexity
 import com.kodiflya.core.plugin.MetricLabel
 import com.kodiflya.core.plugin.SortMetrics
@@ -16,10 +17,10 @@ class QuickSort : AlgorithmPlugin {
     override val category = Category.SORTING
     override val order = 3
     override val complexity = Complexity(
-        bestCase = "O(n log n)",
-        averageCase = "O(n log n)",
-        worstCase = "O(n²)",
-        spaceComplexity = "O(log n)",
+        bestCase = BigO.O_N_LOG_N,
+        averageCase = BigO.O_N_LOG_N,
+        worstCase = BigO.O_N_SQUARED,
+        spaceComplexity = BigO.O_LOG_N,
     )
     override val metricLabels = listOf(
         MetricLabel("Comparisons", ColorRole.PEACH),

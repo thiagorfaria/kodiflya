@@ -4,6 +4,7 @@ import com.kodiflya.core.plugin.AlgorithmInput
 import com.kodiflya.core.plugin.AlgorithmPlugin
 import com.kodiflya.core.plugin.Category
 import com.kodiflya.core.plugin.ColorRole
+import com.kodiflya.core.plugin.BigO
 import com.kodiflya.core.plugin.Complexity
 import com.kodiflya.core.plugin.GridMetrics
 import com.kodiflya.core.plugin.MetricLabel
@@ -16,10 +17,10 @@ class BFS : AlgorithmPlugin {
     override val category = Category.GRAPH
     override val order = 0
     override val complexity = Complexity(
-        bestCase = "O(V+E)",
-        averageCase = "O(V+E)",
-        worstCase = "O(V+E)",
-        spaceComplexity = "O(V)",
+        bestCase = BigO.O_V_PLUS_E,
+        averageCase = BigO.O_V_PLUS_E,
+        worstCase = BigO.O_V_PLUS_E,
+        spaceComplexity = BigO.O_V,
     )
     override val metricLabels = listOf(
         MetricLabel("Visited", ColorRole.PURPLE),

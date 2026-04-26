@@ -12,17 +12,33 @@ interface AlgorithmPlugin {
     fun steps(input: AlgorithmInput): Sequence<VisualizationStep>
 }
 
-enum class Category { SORTING, GRAPH, TREES }
+enum class Category(val route: String) {
+    SORTING("sort"),
+    GRAPH("graph"),
+    TREES("tree"),
+}
 
 enum class ColorRole { NEUTRAL, GREEN, PEACH, AMBER, PURPLE }
 
 data class MetricLabel(val label: String, val colorRole: ColorRole)
 
+enum class BigO(val label: String) {
+    O_1("O(1)"),
+    O_LOG_N("O(log n)"),
+    O_H("O(h)"),
+    O_N("O(n)"),
+    O_V("O(V)"),
+    O_N_LOG_N("O(n log n)"),
+    O_V_PLUS_E("O(V+E)"),
+    O_N_SQUARED("O(n²)"),
+    O_V_PLUS_E_LOG_V("O((V+E)log V)"),
+}
+
 data class Complexity(
-    val bestCase: String,
-    val averageCase: String,
-    val worstCase: String,
-    val spaceComplexity: String,
+    val bestCase: BigO,
+    val averageCase: BigO,
+    val worstCase: BigO,
+    val spaceComplexity: BigO,
 )
 
 sealed class AlgorithmInput {

@@ -28,10 +28,10 @@ import com.kodiflya.ui.theme.SpaceMonoFamily
 @Composable
 fun ComplexityCardsRow(complexity: Complexity) {
     val cards = listOf(
-        Triple("Best", complexity.bestCase, MaterialTheme.colorScheme.primary),
-        Triple("Avg", complexity.averageCase, MaterialTheme.colorScheme.error),
-        Triple("Worst", complexity.worstCase, MaterialTheme.colorScheme.error),
-        Triple("Space", complexity.spaceComplexity, MaterialTheme.colorScheme.onSurfaceVariant),
+        Triple("Best", complexity.bestCase.label, MaterialTheme.colorScheme.primary),
+        Triple("Avg", complexity.averageCase.label, MaterialTheme.colorScheme.error),
+        Triple("Worst", complexity.worstCase.label, MaterialTheme.colorScheme.error),
+        Triple("Space", complexity.spaceComplexity.label, MaterialTheme.colorScheme.onSurfaceVariant),
     )
     Row(
         modifier = Modifier.fillMaxWidth(),

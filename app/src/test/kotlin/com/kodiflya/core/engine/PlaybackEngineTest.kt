@@ -4,6 +4,7 @@ import com.kodiflya.core.plugin.AlgorithmInput
 import com.kodiflya.core.plugin.AlgorithmPlugin
 import com.kodiflya.core.plugin.Category
 import com.kodiflya.core.plugin.ColorRole
+import com.kodiflya.core.plugin.BigO
 import com.kodiflya.core.plugin.Complexity
 import com.kodiflya.core.plugin.MetricLabel
 import com.kodiflya.core.plugin.PlaybackStatus
@@ -42,7 +43,7 @@ class PlaybackEngineTest {
         override val displayName = "Fake"
         override val category = Category.SORTING
         override val order = 0
-        override val complexity = Complexity("O(1)", "O(1)", "O(1)", "O(1)")
+        override val complexity = Complexity(BigO.O_1, BigO.O_1, BigO.O_1, BigO.O_1)
         override val metricLabels = listOf(MetricLabel("Test", ColorRole.NEUTRAL))
         override fun initialData(): AlgorithmInput = fakeInput
         override fun steps(input: AlgorithmInput): Sequence<VisualizationStep> = fakeSteps.asSequence()

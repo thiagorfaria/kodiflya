@@ -4,6 +4,7 @@ import com.kodiflya.core.plugin.AlgorithmInput
 import com.kodiflya.core.plugin.AlgorithmPlugin
 import com.kodiflya.core.plugin.Category
 import com.kodiflya.core.plugin.ColorRole
+import com.kodiflya.core.plugin.BigO
 import com.kodiflya.core.plugin.Complexity
 import com.kodiflya.core.plugin.MetricLabel
 import com.kodiflya.core.plugin.SortMetrics
@@ -18,10 +19,10 @@ class BubbleSort : AlgorithmPlugin {
     override val category = Category.SORTING
     override val order = 0
     override val complexity = Complexity(
-        bestCase = "O(n)",
-        averageCase = "O(n²)",
-        worstCase = "O(n²)",
-        spaceComplexity = "O(1)",
+        bestCase = BigO.O_N,
+        averageCase = BigO.O_N_SQUARED,
+        worstCase = BigO.O_N_SQUARED,
+        spaceComplexity = BigO.O_1,
     )
     override val metricLabels = listOf(
         MetricLabel("Comparisons", ColorRole.PEACH),

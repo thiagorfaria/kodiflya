@@ -4,6 +4,7 @@ import com.kodiflya.core.plugin.AlgorithmInput
 import com.kodiflya.core.plugin.AlgorithmPlugin
 import com.kodiflya.core.plugin.Category
 import com.kodiflya.core.plugin.ColorRole
+import com.kodiflya.core.plugin.BigO
 import com.kodiflya.core.plugin.Complexity
 import com.kodiflya.core.plugin.MetricLabel
 import com.kodiflya.core.plugin.NodeState
@@ -17,10 +18,10 @@ class BSTInorder : AlgorithmPlugin {
     override val category = Category.TREES
     override val order = 0
     override val complexity = Complexity(
-        bestCase = "O(n)",
-        averageCase = "O(n)",
-        worstCase = "O(n)",
-        spaceComplexity = "O(h)",
+        bestCase = BigO.O_N,
+        averageCase = BigO.O_N,
+        worstCase = BigO.O_N,
+        spaceComplexity = BigO.O_H,
     )
     override val metricLabels = listOf(
         MetricLabel("Visited", ColorRole.GREEN),

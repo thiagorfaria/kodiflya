@@ -4,6 +4,7 @@ import com.kodiflya.core.plugin.AlgorithmInput
 import com.kodiflya.core.plugin.AlgorithmPlugin
 import com.kodiflya.core.plugin.Category
 import com.kodiflya.core.plugin.ColorRole
+import com.kodiflya.core.plugin.BigO
 import com.kodiflya.core.plugin.Complexity
 import com.kodiflya.core.plugin.GridMetrics
 import com.kodiflya.core.plugin.MetricLabel
@@ -17,10 +18,10 @@ class Dijkstra : AlgorithmPlugin {
     override val category = Category.GRAPH
     override val order = 2
     override val complexity = Complexity(
-        bestCase = "O(V+E)",
-        averageCase = "O((V+E)logV)",
-        worstCase = "O((V+E)logV)",
-        spaceComplexity = "O(V)",
+        bestCase = BigO.O_V_PLUS_E,
+        averageCase = BigO.O_V_PLUS_E_LOG_V,
+        worstCase = BigO.O_V_PLUS_E_LOG_V,
+        spaceComplexity = BigO.O_V,
     )
     override val metricLabels = listOf(
         MetricLabel("Visited", ColorRole.PURPLE),

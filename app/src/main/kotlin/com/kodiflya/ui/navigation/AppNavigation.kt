@@ -25,18 +25,15 @@ import com.kodiflya.ui.screens.home.HomeScreen
 import com.kodiflya.ui.screens.sorting.SortingScreen
 import com.kodiflya.ui.screens.trees.TreeScreen
 
-private const val ROUTE_HOME    = "home"
-private const val ROUTE_SORTING = "sort"
-private const val ROUTE_GRAPH   = "graph"
-private const val ROUTE_TREES   = "tree"
+private const val ROUTE_HOME = "home"
 
 private data class NavigationTab(val route: String, val label: String, val icon: String)
 
 private val navigationTabs = listOf(
-    NavigationTab(ROUTE_HOME,    "Home",  "⌂"),
-    NavigationTab(ROUTE_SORTING, "Sort",  "↑↓"),
-    NavigationTab(ROUTE_GRAPH,   "Graph", "◉"),
-    NavigationTab(ROUTE_TREES,   "Tree",  "⑂"),
+    NavigationTab(ROUTE_HOME,               "Home",  "⌂"),
+    NavigationTab(Category.SORTING.route,   "Sort",  "↑↓"),
+    NavigationTab(Category.GRAPH.route,     "Graph", "◉"),
+    NavigationTab(Category.TREES.route,     "Tree",  "⑂"),
 )
 
 @Composable
@@ -89,21 +86,16 @@ fun AppNavigation() {
         ) {
             composable(ROUTE_HOME) {
                 HomeScreen(onNavigate = { category ->
-                    val route = when (category) {
-                        Category.SORTING -> ROUTE_SORTING
-                        Category.GRAPH   -> ROUTE_GRAPH
-                        Category.TREES   -> ROUTE_TREES
-                    }
-                    navController.navigate(route) {
+                    navController.navigate(category.route) {
                         popUpTo(navController.graph.findStartDestination().id) { saveState = true }
                         launchSingleTop = true
                         restoreState = true
                     }
                 })
             }
-            composable(ROUTE_SORTING) { SortingScreen() }
-            composable(ROUTE_GRAPH) { GraphScreen() }
-            composable(ROUTE_TREES) { TreeScreen() }
+            composable(Category.SORTING.route) { SortingScreen() }
+            composable(Category.GRAPH.route)   { GraphScreen() }
+            composable(Category.TREES.route)   { TreeScreen() }
         }
     }
 }

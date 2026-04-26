@@ -4,6 +4,7 @@ import com.kodiflya.core.plugin.AlgorithmInput
 import com.kodiflya.core.plugin.AlgorithmPlugin
 import com.kodiflya.core.plugin.Category
 import com.kodiflya.core.plugin.ColorRole
+import com.kodiflya.core.plugin.BigO
 import com.kodiflya.core.plugin.Complexity
 import com.kodiflya.core.plugin.MetricLabel
 import com.kodiflya.core.plugin.SortMetrics
@@ -16,10 +17,10 @@ class MergeSort : AlgorithmPlugin {
     override val category = Category.SORTING
     override val order = 2
     override val complexity = Complexity(
-        bestCase = "O(n log n)",
-        averageCase = "O(n log n)",
-        worstCase = "O(n log n)",
-        spaceComplexity = "O(n)",
+        bestCase = BigO.O_N_LOG_N,
+        averageCase = BigO.O_N_LOG_N,
+        worstCase = BigO.O_N_LOG_N,
+        spaceComplexity = BigO.O_N,
     )
     override val metricLabels = listOf(
         MetricLabel("Comparisons", ColorRole.PEACH),
