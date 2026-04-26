@@ -21,7 +21,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kodiflya.core.plugin.SortMetrics
 import com.kodiflya.core.plugin.VisualizationStep
 import com.kodiflya.ui.component.AlgorithmChipRow
 import com.kodiflya.ui.component.ComplexityCardsRow
@@ -29,6 +28,7 @@ import com.kodiflya.ui.component.ControlsRow
 import com.kodiflya.ui.component.MetricCard
 import com.kodiflya.ui.component.ScreenHeader
 import com.kodiflya.ui.component.speedLevels
+import com.kodiflya.ui.component.toColor
 
 @Composable
 fun SortingScreen(viewModel: SortingViewModel = hiltViewModel()) {
@@ -36,8 +36,9 @@ fun SortingScreen(viewModel: SortingViewModel = hiltViewModel()) {
     val activeIndex by viewModel.activeIndex.collectAsStateWithLifecycle()
     var speedIndex by remember { mutableFloatStateOf(1f) }
 
+    val activePlugin = viewModel.sortingPlugins[activeIndex]
     val step = visualizationState.currentStep as? VisualizationStep.Sort
-    val metrics = step?.metrics ?: SortMetrics(0L, 0L, 0L)
+    val metricValues = step?.metricValues ?: List(activePlugin.metricLabels.size) { 0L }
 
     Column(
         modifier = Modifier
@@ -46,7 +47,7 @@ fun SortingScreen(viewModel: SortingViewModel = hiltViewModel()) {
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        ScreenHeader(algorithmName = viewModel.sortingPlugins[activeIndex].displayName)
+        ScreenHeader(algorithmName = activePlugin.displayName)
 
         AlgorithmChipRow(
             plugins = viewModel.sortingPlugins,
@@ -61,9 +62,14 @@ fun SortingScreen(viewModel: SortingViewModel = hiltViewModel()) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            MetricCard("Comparisons", metrics.comparisons.toString(), MaterialTheme.colorScheme.secondary, Modifier.weight(1f))
-            MetricCard("Swaps", metrics.swaps.toString(), MaterialTheme.colorScheme.primary, Modifier.weight(1f))
-            MetricCard("Array reads", metrics.arrayReads.toString(), MaterialTheme.colorScheme.error, Modifier.weight(1f))
+            activePlugin.metricLabels.zip(metricValues).forEach { (metricLabel, value) ->
+                MetricCard(
+                    label = metricLabel.label,
+                    value = value.toString(),
+                    accentColor = metricLabel.colorRole.toColor(),
+                    modifier = Modifier.weight(1f),
+                )
+            }
         }
 
         Box(
@@ -81,7 +87,7 @@ fun SortingScreen(viewModel: SortingViewModel = hiltViewModel()) {
             )
         }
 
-        ComplexityCardsRow(complexity = viewModel.sortingPlugins[activeIndex].complexity)
+        ComplexityCardsRow(complexity = activePlugin.complexity)
 
         ControlsRow(
             playbackStatus = visualizationState.playbackStatus,

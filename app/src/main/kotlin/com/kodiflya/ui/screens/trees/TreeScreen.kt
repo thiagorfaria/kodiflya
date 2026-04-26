@@ -25,8 +25,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kodiflya.algorithms.trees.BST_VALUES
-import com.kodiflya.core.plugin.TreeMetrics
 import com.kodiflya.core.plugin.VisualizationStep
 import com.kodiflya.ui.component.AlgorithmChipRow
 import com.kodiflya.ui.component.ComplexityCardsRow
@@ -34,6 +32,7 @@ import com.kodiflya.ui.component.ControlsRow
 import com.kodiflya.ui.component.MetricCard
 import com.kodiflya.ui.component.ScreenHeader
 import com.kodiflya.ui.component.speedLevels
+import com.kodiflya.ui.component.toColor
 
 @Composable
 fun TreeScreen(viewModel: TreeViewModel = hiltViewModel()) {
@@ -41,8 +40,9 @@ fun TreeScreen(viewModel: TreeViewModel = hiltViewModel()) {
     val activeIndex by viewModel.activeIndex.collectAsStateWithLifecycle()
     var speedIndex by remember { mutableFloatStateOf(1f) }
 
+    val activePlugin = viewModel.treePlugins[activeIndex]
     val step = visualizationState.currentStep as? VisualizationStep.Tree
-    val metrics = step?.metrics ?: TreeMetrics(0L, BST_VALUES.size.toLong(), 3L)
+    val metricValues = step?.metricValues ?: List(activePlugin.metricLabels.size) { 0L }
 
     Column(
         modifier = Modifier
@@ -51,7 +51,7 @@ fun TreeScreen(viewModel: TreeViewModel = hiltViewModel()) {
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        ScreenHeader(algorithmName = viewModel.treePlugins[activeIndex].displayName)
+        ScreenHeader(algorithmName = activePlugin.displayName)
 
         AlgorithmChipRow(
             plugins = viewModel.treePlugins,
@@ -66,9 +66,14 @@ fun TreeScreen(viewModel: TreeViewModel = hiltViewModel()) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            MetricCard("Visited", metrics.visited.toString(), MaterialTheme.colorScheme.primary, Modifier.weight(1f))
-            MetricCard("Total", metrics.totalNodes.toString(), MaterialTheme.colorScheme.error, Modifier.weight(1f))
-            MetricCard("Height", metrics.height.toString(), MaterialTheme.colorScheme.secondary, Modifier.weight(1f))
+            activePlugin.metricLabels.zip(metricValues).forEach { (metricLabel, value) ->
+                MetricCard(
+                    label = metricLabel.label,
+                    value = value.toString(),
+                    accentColor = metricLabel.colorRole.toColor(),
+                    modifier = Modifier.weight(1f),
+                )
+            }
         }
 
         Box(
@@ -84,11 +89,13 @@ fun TreeScreen(viewModel: TreeViewModel = hiltViewModel()) {
         }
 
         TraversalSequenceRow(
-            allValues = BST_VALUES.sorted(),
+            // Node values come from the step payload — no import from the logic layer.
+            // Before playback starts, nodeStates is empty so no nodes are rendered.
+            allValues = step?.nodeStates?.keys?.sorted() ?: emptyList(),
             sequence = step?.traversalSequence ?: emptyList(),
         )
 
-        ComplexityCardsRow(complexity = viewModel.treePlugins[activeIndex].complexity)
+        ComplexityCardsRow(complexity = activePlugin.complexity)
 
         ControlsRow(
             playbackStatus = visualizationState.playbackStatus,

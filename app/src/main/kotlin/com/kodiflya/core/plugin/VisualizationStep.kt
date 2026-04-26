@@ -5,6 +5,10 @@ package com.kodiflya.core.plugin
 
 sealed class VisualizationStep {
 
+    // Ordered metric values matching the plugin's metricLabels list.
+    // Screens zip this with plugin.metricLabels — no hardcoded labels or color slots in UI.
+    abstract val metricValues: List<Long>
+
     // Sorting: full array snapshot + element state sets per step
     data class Sort(
         val values: IntArray,
@@ -14,6 +18,11 @@ sealed class VisualizationStep {
         val pivot: Int?,
         val metrics: SortMetrics,
     ) : VisualizationStep() {
+        // metricValues order matches every sorting plugin's metricLabels:
+        // [0] comparisons, [1] swaps, [2] arrayReads
+        override val metricValues: List<Long>
+            get() = listOf(metrics.comparisons, metrics.swaps, metrics.arrayReads)
+
         override fun equals(other: Any?) =
             other is Sort && values.contentEquals(other.values) &&
                 comparing == other.comparing && swapping == other.swapping &&
@@ -35,14 +44,25 @@ sealed class VisualizationStep {
         val frontier: Set<Pair<Int, Int>>,
         val path: List<Pair<Int, Int>>,
         val metrics: GridMetrics,
-    ) : VisualizationStep()
+    ) : VisualizationStep() {
+        // metricValues order matches every graph plugin's metricLabels:
+        // [0] visited, [1] frontier size (from frontier set — not duplicated in GridMetrics),
+        // [2] pathLength
+        override val metricValues: List<Long>
+            get() = listOf(metrics.visited, frontier.size.toLong(), metrics.pathLength)
+    }
 
     // Tree traversal: full node state map + complete traversal sequence per step (not delta)
     data class Tree(
         val nodeStates: Map<Int, NodeState>,
         val traversalSequence: List<Int>,
         val metrics: TreeMetrics,
-    ) : VisualizationStep()
+    ) : VisualizationStep() {
+        // metricValues order matches every tree plugin's metricLabels:
+        // [0] visited, [1] totalNodes, [2] height
+        override val metricValues: List<Long>
+            get() = listOf(metrics.visited, metrics.totalNodes, metrics.height)
+    }
 }
 
 enum class CellState { OPEN, WALL, VISITED, FRONTIER, PATH, START, END }

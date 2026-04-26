@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kodiflya.core.plugin.AlgorithmInput
-import com.kodiflya.core.plugin.GridMetrics
 import com.kodiflya.core.plugin.VisualizationStep
 import com.kodiflya.ui.component.AlgorithmChipRow
 import com.kodiflya.ui.component.ComplexityCardsRow
@@ -30,6 +29,7 @@ import com.kodiflya.ui.component.ControlsRow
 import com.kodiflya.ui.component.MetricCard
 import com.kodiflya.ui.component.ScreenHeader
 import com.kodiflya.ui.component.speedLevels
+import com.kodiflya.ui.component.toColor
 
 @Composable
 fun GraphScreen(viewModel: GraphViewModel = hiltViewModel()) {
@@ -37,10 +37,10 @@ fun GraphScreen(viewModel: GraphViewModel = hiltViewModel()) {
     val activeIndex by viewModel.activeIndex.collectAsStateWithLifecycle()
     var speedIndex by remember { mutableFloatStateOf(1f) }
 
+    val activePlugin = viewModel.graphPlugins[activeIndex]
     val step = visualizationState.currentStep as? VisualizationStep.Grid
-    val metrics = step?.metrics ?: GridMetrics(0L, 0L)
-    val frontierSize = step?.frontier?.size?.toLong() ?: 0L
-    val initialGrid = viewModel.graphPlugins[activeIndex].initialData() as AlgorithmInput.GridInput
+    val metricValues = step?.metricValues ?: List(activePlugin.metricLabels.size) { 0L }
+    val initialGrid = activePlugin.initialData() as AlgorithmInput.GridInput
 
     Column(
         modifier = Modifier
@@ -49,7 +49,7 @@ fun GraphScreen(viewModel: GraphViewModel = hiltViewModel()) {
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        ScreenHeader(algorithmName = viewModel.graphPlugins[activeIndex].displayName)
+        ScreenHeader(algorithmName = activePlugin.displayName)
 
         AlgorithmChipRow(
             plugins = viewModel.graphPlugins,
@@ -64,9 +64,14 @@ fun GraphScreen(viewModel: GraphViewModel = hiltViewModel()) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            MetricCard("Visited", metrics.visited.toString(), MaterialTheme.colorScheme.tertiary, Modifier.weight(1f))
-            MetricCard("Frontier", frontierSize.toString(), MaterialTheme.colorScheme.error, Modifier.weight(1f))
-            MetricCard("Path length", metrics.pathLength.toString(), MaterialTheme.colorScheme.primary, Modifier.weight(1f))
+            activePlugin.metricLabels.zip(metricValues).forEach { (metricLabel, value) ->
+                MetricCard(
+                    label = metricLabel.label,
+                    value = value.toString(),
+                    accentColor = metricLabel.colorRole.toColor(),
+                    modifier = Modifier.weight(1f),
+                )
+            }
         }
 
         Box(
@@ -81,7 +86,7 @@ fun GraphScreen(viewModel: GraphViewModel = hiltViewModel()) {
             GraphCanvas(step = step, initialGrid = initialGrid, modifier = Modifier.fillMaxSize())
         }
 
-        ComplexityCardsRow(complexity = viewModel.graphPlugins[activeIndex].complexity)
+        ComplexityCardsRow(complexity = activePlugin.complexity)
 
         ControlsRow(
             playbackStatus = visualizationState.playbackStatus,

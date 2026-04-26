@@ -27,7 +27,7 @@ class BubbleSort : AlgorithmPlugin {
     override val metricLabels = listOf(
         MetricLabel("Comparisons", ColorRole.PEACH),
         MetricLabel("Swaps", ColorRole.GREEN),
-        MetricLabel("Passes", ColorRole.AMBER),
+        MetricLabel("Array reads", ColorRole.AMBER),
     )
 
     override fun initialData(): AlgorithmInput {
