@@ -65,6 +65,7 @@ Kodiflya is a native Android app that visualizes algorithms for interview prepar
 | UI → Logic (direct) | **FORBIDDEN** | UI never instantiates algorithm classes |
 | Engine → specific algorithm class | **FORBIDDEN** | Engine only knows `AlgorithmPlugin` interface |
 | ViewModel → specific algorithm | **FORBIDDEN** | ViewModel receives `AlgorithmPlugin` via Hilt injection |
+| ViewModel → layout composable | **FORBIDDEN** | Layout composables receive plain data; only screen entry points hold a ViewModel reference |
 
 **Registry pattern:** Hilt provides `Set<@JvmSuppressWildcards AlgorithmPlugin>` via multibinding. ViewModel filters the set by `Category`; it never imports individual algorithm classes.
 
@@ -112,7 +113,7 @@ Kodiflya is a native Android app that visualizes algorithms for interview prepar
 
 ## Development Philosophy
 
-1. **Plugin-first.** `AlgorithmPlugin` is the only extension point. Resist the urge to add category-specific base classes or helper hooks unless the pattern genuinely demands it.
+1. **Plugin-first.** `AlgorithmPlugin` is the only extension point. Resist the urge to add category-specific base classes or helper hooks in the algorithm/engine layers unless the pattern genuinely demands it.
 
 2. **One new file + one line.** Adding an algorithm means creating one new file (`BubbleSort.kt`) and adding one `@Provides @IntoSet` binding in `AlgorithmModule.kt`. No changes to Engine, ViewModel, or UI screens.
 
@@ -129,6 +130,10 @@ Kodiflya is a native Android app that visualizes algorithms for interview prepar
 8. **Metrics panel driven by plugin metadata, not screen-hardcoded labels.** `AlgorithmPlugin.metricLabels` declares the 3 metric slot names; the screen renders whatever the plugin declared. Never hardcode "Comparisons / Swaps / Passes" in a Composable.
 
 9. **Complexity as structured data, not display strings.** `AlgorithmPlugin` carries structured complexity fields (`bestCase`, `averageCase`, `worstCase`, `spaceComplexity`) as enums, not ad-hoc strings. This makes future sorting and filtering by complexity possible without parsing.
+
+10. **Screens own the ViewModel. Layout composables receive plain data.** Only screen entry points (`SortingScreen`, `GraphScreen`, `TreeScreen`) may reference a ViewModel or call `collectAsStateWithLifecycle`. Shared layout composables (`AlgorithmScreenLayout`) accept plain parameters — no ViewModel, no state collection inside them. This makes layouts previewable and testable without a ViewModel.
+
+11. **Slot API for shared layouts with variable content.** When screens share structure but differ in one section, use `@Composable () -> Unit` slot parameters — the same pattern Material3's `Scaffold` uses for `topBar`, `bottomBar`, and `content`. No branching on screen type inside the shared layout.
 
 ---
 
@@ -153,6 +158,15 @@ Kodiflya is a native Android app that visualizes algorithms for interview prepar
 | `FeatureScreen` (Composable entry point) | `SortingScreen`, `HomeScreen` |
 | `FeatureUiState` | `SortingUiState` — defer until needed |
 | `FeatureEvent` | `SortingEvent` — defer until needed |
+
+### `ui/component/` vs `ui/screens/` top-level
+
+| Location | What goes there | Rule |
+|---|---|---|
+| `ui/component/` | Reusable widgets used across multiple screen types | `MetricCard`, `ControlsRow`, `AlgorithmChipRow` |
+| `ui/screens/` top-level | Shared screen infrastructure — not reusable widgets | `AlgorithmViewModel`, `AlgorithmScreenLayout` |
+
+If a composable or ViewModel is shared across screens but is structural (not a self-contained widget), it belongs at the `ui/screens/` level, not in `ui/component/`.
 
 ### Deferred (no data layer in v1)
 `UseCase`, `Repository`, `Impl`, `Dto`, `Entity`, `Mapper` — introduce only when a persistence or network layer exists.
@@ -228,6 +242,8 @@ app/
         di/         AlgorithmModule.kt (Hilt multibinding registry)
         ui/
           screens/
+                      AlgorithmViewModel.kt     ← shared base ViewModel (abstract)
+                      AlgorithmScreenLayout.kt  ← shared screen layout (stateless, slot API)
             home/     HomeScreen.kt, HomeViewModel.kt, MiniVisualization.kt
             sorting/  SortingScreen.kt, SortingViewModel.kt, SortingCanvas.kt
             graph/    GraphScreen.kt, GraphViewModel.kt, GraphCanvas.kt
