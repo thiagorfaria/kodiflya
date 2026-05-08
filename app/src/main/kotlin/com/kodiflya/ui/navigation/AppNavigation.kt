@@ -12,6 +12,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -26,6 +29,7 @@ import com.kodiflya.ui.component.NavigationIcons
 import com.kodiflya.ui.screens.graph.GraphScreen
 import com.kodiflya.ui.screens.home.HomeScreen
 import com.kodiflya.ui.screens.sorting.SortingScreen
+import com.kodiflya.ui.screens.splash.SplashScreen
 import com.kodiflya.ui.screens.trees.TreeScreen
 
 private const val ROUTE_HOME = "home"
@@ -55,6 +59,13 @@ private fun navigationBarItemColors() = NavigationBarItemDefaults.colors(
 
 @Composable
 fun AppNavigation() {
+    var splashDone by remember { mutableStateOf(false) }
+
+    if (!splashDone) {
+        SplashScreen(onDone = { splashDone = true })
+        return
+    }
+
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
