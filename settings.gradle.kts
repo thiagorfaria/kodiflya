@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -25,3 +26,14 @@ dependencyResolutionManagement {
 
 rootProject.name = "kodiflya"
 include(":app")
+include(":core:plugin")
+include(":algorithms")
+include(":core:engine")
+include(":ui:theme")
+include(":ui:component")
+include(":ui:algorithm")
+include(":feature:splash")
+include(":feature:home")
+include(":feature:sorting")
+include(":feature:graph")
+include(":feature:trees")

@@ -1,7 +1,5 @@
 package com.kodiflya.ui.navigation
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -15,7 +13,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -121,16 +118,5 @@ fun AppNavigation() {
             composable(Category.GRAPH.route)   { GraphScreen() }
             composable(Category.TREES.route)   { TreeScreen() }
         }
-    }
-}
-
-@Composable
-private fun PlaceholderScreen(label: String) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Text(
-            text = "$label — coming soon",
-            color = MaterialTheme.colorScheme.outlineVariant,
-            modifier = Modifier.align(Alignment.Center),
-        )
     }
 }

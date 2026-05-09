@@ -53,6 +53,18 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:plugin"))
+    implementation(project(":algorithms"))
+    implementation(project(":core:engine"))
+    implementation(project(":ui:theme"))
+    implementation(project(":ui:component"))
+    implementation(project(":ui:algorithm"))
+    implementation(project(":feature:splash"))
+    implementation(project(":feature:home"))
+    implementation(project(":feature:sorting"))
+    implementation(project(":feature:graph"))
+    implementation(project(":feature:trees"))
+
     // Compose
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)

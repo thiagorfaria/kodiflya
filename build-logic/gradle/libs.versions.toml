@@ -1,0 +1,11 @@
+[versions]
+agp    = "8.13.2"
+kotlin = "2.0.21"
+ksp    = "2.0.21-1.0.28"
+hilt   = "2.51.1"
+
+[libraries]
+gradlePlugin-android = { group = "com.android.tools.build", name = "gradle",                         version.ref = "agp" }
+gradlePlugin-kotlin  = { group = "org.jetbrains.kotlin",    name = "kotlin-gradle-plugin",            version.ref = "kotlin" }
+gradlePlugin-ksp     = { group = "com.google.devtools.ksp", name = "symbol-processing-gradle-plugin", version.ref = "ksp" }
+gradlePlugin-hilt    = { group = "com.google.dagger",       name = "hilt-android-gradle-plugin",      version.ref = "hilt" }

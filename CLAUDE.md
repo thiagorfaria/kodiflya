@@ -69,6 +69,8 @@ Kodiflya is a native Android app that visualizes algorithms for interview prepar
 
 **Registry pattern:** Hilt provides `Set<@JvmSuppressWildcards AlgorithmPlugin>` via multibinding. ViewModel filters the set by `Category`; it never imports individual algorithm classes.
 
+**Why `@JvmSuppressWildcards`:** Hilt is a Java-based framework. Kotlin compiles `Set<AlgorithmPlugin>` in a constructor parameter to `Set<? extends AlgorithmPlugin>` in JVM bytecode (a wildcard). Hilt cannot match that to its `Set<AlgorithmPlugin>` binding, so injection fails. `@JvmSuppressWildcards` tells the Kotlin compiler to emit the type without the wildcard, which is the exact type Hilt generated. This annotation is required on every constructor parameter that receives the multibinding set (`HomeViewModel`, `SortingViewModel`, `GraphViewModel`, `TreeViewModel`).
+
 ---
 
 ## v1 Scope — Committed Algorithms
@@ -115,7 +117,7 @@ Kodiflya is a native Android app that visualizes algorithms for interview prepar
 
 1. **Plugin-first.** `AlgorithmPlugin` is the only extension point. Resist the urge to add category-specific base classes or helper hooks in the algorithm/engine layers unless the pattern genuinely demands it.
 
-2. **One new file + one line.** Adding an algorithm means creating one new file (`BubbleSort.kt`) and adding one `@Provides @IntoSet` binding in `AlgorithmModule.kt`. No changes to Engine, ViewModel, or UI screens.
+2. **One new file + one line.** Adding an algorithm means creating one new file in `:algorithms` (`BubbleSort.kt`) and adding one `@Provides @IntoSet` binding in `AlgorithmModule.kt` (in `:app`). No changes to Engine, ViewModel, or UI screens.
 
 3. **No UI in the logic layer. Ever.** If you find yourself importing `androidx` in an algorithm file, the architecture is broken. Stop and fix it.
 
@@ -159,14 +161,14 @@ Kodiflya is a native Android app that visualizes algorithms for interview prepar
 | `FeatureUiState` | `SortingUiState` — defer until needed |
 | `FeatureEvent` | `SortingEvent` — defer until needed |
 
-### `ui/component/` vs `ui/screens/` top-level
+### `:ui:component` vs `:ui:algorithm`
 
-| Location | What goes there | Rule |
+| Module | What goes there | Rule |
 |---|---|---|
-| `ui/component/` | Reusable widgets used across multiple screen types | `MetricCard`, `ControlsRow`, `AlgorithmChipRow` |
-| `ui/screens/` top-level | Shared screen infrastructure — not reusable widgets | `AlgorithmViewModel`, `AlgorithmScreenLayout` |
+| `:ui:component` | Reusable widgets used across multiple screen types | `MetricCard`, `ControlsRow`, `AlgorithmChipRow` |
+| `:ui:algorithm` | Shared screen infrastructure — not reusable widgets | `AlgorithmViewModel`, `AlgorithmScreenLayout` |
 
-If a composable or ViewModel is shared across screens but is structural (not a self-contained widget), it belongs at the `ui/screens/` level, not in `ui/component/`.
+If a composable or ViewModel is shared across screens but is structural (not a self-contained widget), it belongs in `:ui:algorithm`, not `:ui:component`.
 
 ### Deferred (no data layer in v1)
 `UseCase`, `Repository`, `Impl`, `Dto`, `Entity`, `Mapper` — introduce only when a persistence or network layer exists.
@@ -214,45 +216,41 @@ If a composable or ViewModel is shared across screens but is structural (not a s
 
 ## Test Requirements
 
-| Layer | Requirement |
+| Module | Requirement |
 |---|---|
-| Logic (algorithms) | 100% unit-tested, JUnit5 + MockK, zero Android dependencies |
-| Engine (playback) | Unit-tested with `kotlinx-coroutines-test` |
-| UI | Compose UI tests for play/pause, speed change, algorithm switch |
+| `:core:plugin`, `:algorithms` | 100% unit-tested, JUnit5 + MockK, runs on JVM — no device needed |
+| `:core:engine` | Unit-tested with `kotlinx-coroutines-test`, runs on JVM |
+| `:ui:component` | Compose UI tests for reusable widgets |
+| Feature modules | Compose UI tests for play/pause, speed change, algorithm switch |
 | Integration | No database mocking (no DB in v1) |
 
 Every algorithm's `steps()` output must be fully deterministic and testable without a device or emulator.
 
 ---
 
-## Project Structure (target)
+## Module Structure
 
 ```
-app/
-  src/
-    main/
-      kotlin/com/kodiflya/
-        core/
-          plugin/   AlgorithmPlugin.kt, VisualizationStep.kt, VisualizationState.kt
-          engine/   PlaybackEngine.kt, PlaybackEngineFactory.kt
-        algorithms/
-          sorting/  BubbleSort.kt, InsertionSort.kt, MergeSort.kt, QuickSort.kt
-          graph/    BFS.kt, DFS.kt, Dijkstra.kt
-          trees/    BSTInorder.kt, BSTPreorder.kt, BSTPostorder.kt
-        di/         AlgorithmModule.kt (Hilt multibinding registry)
-        ui/
-          screens/
-                      AlgorithmViewModel.kt     ← shared base ViewModel (abstract)
-                      AlgorithmScreenLayout.kt  ← shared screen layout (stateless, slot API)
-            home/     HomeScreen.kt, HomeViewModel.kt, MiniVisualization.kt
-            sorting/  SortingScreen.kt, SortingViewModel.kt, SortingCanvas.kt
-            graph/    GraphScreen.kt, GraphViewModel.kt, GraphCanvas.kt
-            trees/    TreeScreen.kt, TreeViewModel.kt, TreeCanvas.kt
-          navigation/ AppNavigation.kt
-          component/  AlgorithmChipRow.kt, ComplexityCardsRow.kt, ControlsRow.kt,
-                      MetricCard.kt, ScreenHeader.kt,
-                      KodiflyaIcons.kt, AlgorithmIconSource.kt, AlgorithmIconRegistry.kt
-          theme/      Theme.kt, Color.kt, Type.kt
-    test/             (mirrors main — unit tests)
-    androidTest/      (Compose UI tests)
+build-logic/                    Convention plugins (kodiflya.kotlin.jvm, kodiflya.android.lib,
+                                kodiflya.android.compose.lib, kodiflya.android.hilt)
+
+:core:plugin    pure Kotlin JVM — AlgorithmPlugin, VisualizationStep, VisualizationState
+:core:engine    Android + Hilt  — PlaybackEngine, PlaybackEngineFactory
+:algorithms     pure Kotlin JVM — sorting/, graph/, trees/ implementations
+:ui:theme       Compose lib     — Theme.kt, Color.kt, Type.kt
+:ui:component   Compose lib     — AlgorithmChipRow, ControlsRow, MetricCard, ScreenHeader, …
+:ui:algorithm   Compose + Hilt  — AlgorithmViewModel (abstract), AlgorithmScreenLayout
+:feature:splash Compose lib     — SplashScreen
+:feature:home   Compose + Hilt  — HomeScreen, HomeViewModel, MiniVisualization
+:feature:sorting Compose + Hilt — SortingScreen, SortingViewModel, SortingCanvas
+:feature:graph  Compose + Hilt  — GraphScreen, GraphViewModel, GraphCanvas
+:feature:trees  Compose + Hilt  — TreeScreen, TreeViewModel, TreeCanvas
+:app            Application     — MainActivity, KodiflyaApplication, AlgorithmModule, AppNavigation
 ```
+
+Dependency rules (no cycles):
+- `:core:plugin` ← `:core:engine`, `:algorithms`, `:ui:component`, `:ui:algorithm`, all features
+- `:core:engine` ← `:ui:algorithm`, `:feature:sorting`, `:feature:graph`, `:feature:trees`
+- `:ui:component` ← `:ui:algorithm`, all feature modules
+- Feature modules are isolated — a feature module MUST NOT import another feature module
+- `:app` is the only module that imports all features (wiring layer)
