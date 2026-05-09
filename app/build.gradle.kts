@@ -64,6 +64,7 @@ dependencies {
     implementation(project(":feature:sorting"))
     implementation(project(":feature:graph"))
     implementation(project(":feature:trees"))
+    implementation(project(":feature:search"))
 
     // Compose
     implementation(platform(libs.compose.bom))

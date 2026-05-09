@@ -1,5 +1,6 @@
 package com.kodiflya.ui.screens.home
 
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -153,6 +154,54 @@ fun TreeMiniVisualization(modifier: Modifier = Modifier) {
         positions.forEachIndexed { i, pos ->
             val color = if (i == activeIndex) error else surfaceVariant
             drawCircle(color = color, radius = nodeRadius, center = pos)
+        }
+    }
+}
+
+private const val MINI_SEARCH_COLS = 4
+private const val MINI_SEARCH_ROWS = 2
+private const val MINI_SEARCH_FOUND = 5
+
+@Composable
+fun SearchMiniVisualization(modifier: Modifier = Modifier) {
+    val secondary = MaterialTheme.colorScheme.secondary
+    val primary = MaterialTheme.colorScheme.primary
+    val surfaceVariant = MaterialTheme.colorScheme.surfaceVariant
+    val eliminatedColor = Color(0xFF252525)
+
+    val total = MINI_SEARCH_COLS * MINI_SEARCH_ROWS
+    val transition = rememberInfiniteTransition(label = "search")
+    val phase by transition.animateFloat(
+        initialValue = 0f,
+        targetValue = total.toFloat(),
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 2400, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart,
+        ),
+        label = "scan",
+    )
+    val activeIndex = phase.toInt().coerceIn(0, total - 1)
+
+    Canvas(modifier = modifier.fillMaxSize()) {
+        val gap = 2f
+        val cellWidth = (size.width - gap * (MINI_SEARCH_COLS - 1)) / MINI_SEARCH_COLS
+        val cellHeight = (size.height - gap * (MINI_SEARCH_ROWS - 1)) / MINI_SEARCH_ROWS
+
+        repeat(total) { i ->
+            val row = i / MINI_SEARCH_COLS
+            val col = i % MINI_SEARCH_COLS
+            val cellColor = when {
+                activeIndex > MINI_SEARCH_FOUND && i == MINI_SEARCH_FOUND -> primary
+                i == activeIndex -> secondary
+                i < activeIndex -> eliminatedColor
+                else -> surfaceVariant
+            }
+            drawRoundRect(
+                color = cellColor,
+                topLeft = Offset(col * (cellWidth + gap), row * (cellHeight + gap)),
+                size = Size(cellWidth, cellHeight),
+                cornerRadius = CornerRadius(2f, 2f),
+            )
         }
     }
 }

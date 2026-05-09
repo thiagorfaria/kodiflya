@@ -62,6 +62,10 @@ private const val TREES_LEAF_L  = "M 6 20 m -1.75 0 a 1.75 1.75 0 1 0 3.5 0 a 1.
 private const val TREES_LEAF_R  = "M 18 20 m -1.75 0 a 1.75 1.75 0 1 0 3.5 0 a 1.75 1.75 0 1 0 -3.5 0 Z"
 private const val TREES_BRANCHES = "M10.7 5.4L7.3 10.6 M13.3 5.4L16.7 10.6 M6 14v4 M18 14v4"
 
+// Magnifying glass: circle lens + diagonal handle
+private const val SEARCH_LENS   = "M 10 10 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0 Z"
+private const val SEARCH_HANDLE = "M 13.5 13.5 L 19 19"
+
 object NavigationIcons {
 
     val HomeOutlined: ImageVector by lazy {
@@ -125,6 +129,20 @@ object NavigationIcons {
             fillPath(TREES_LEAF_L)
             fillPath(TREES_LEAF_R)
             strokePath(TREES_BRANCHES)
+        }
+    }
+
+    val SearchOutlined: ImageVector by lazy {
+        navIcon("nav.search.outlined") {
+            strokePath(SEARCH_LENS)
+            strokePath(SEARCH_HANDLE)
+        }
+    }
+
+    val SearchFilled: ImageVector by lazy {
+        navIcon("nav.search.filled") {
+            fillPath(SEARCH_LENS)
+            strokePath(SEARCH_HANDLE)
         }
     }
 }

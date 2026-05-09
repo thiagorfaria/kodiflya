@@ -91,6 +91,10 @@ Kodiflya is a native Android app that visualizes algorithms for interview prepar
 - BST traversal: Preorder (N→L→R)
 - BST traversal: Postorder (L→R→N)
 
+### Search (array cell visualizer)
+- Binary Search (sorted array, O(log n))
+- Linear Search (unsorted array, O(n))
+
 ### Per-screen controls (all screens)
 - Live metrics panel (3 cards: algorithm-specific counters)
 - Speed control: 5 levels (0.5×, 1×, 2×, 4×, 8×)
@@ -236,7 +240,7 @@ build-logic/                    Convention plugins (kodiflya.kotlin.jvm, kodifly
 
 :core:plugin    pure Kotlin JVM — AlgorithmPlugin, VisualizationStep, VisualizationState
 :core:engine    Android + Hilt  — PlaybackEngine, PlaybackEngineFactory
-:algorithms     pure Kotlin JVM — sorting/, graph/, trees/ implementations
+:algorithms     pure Kotlin JVM — sorting/, graph/, trees/, search/ implementations
 :ui:theme       Compose lib     — Theme.kt, Color.kt, Type.kt
 :ui:component   Compose lib     — AlgorithmChipRow, ControlsRow, MetricCard, ScreenHeader, …
 :ui:algorithm   Compose + Hilt  — AlgorithmViewModel (abstract), AlgorithmScreenLayout
@@ -245,12 +249,13 @@ build-logic/                    Convention plugins (kodiflya.kotlin.jvm, kodifly
 :feature:sorting Compose + Hilt — SortingScreen, SortingViewModel, SortingCanvas
 :feature:graph  Compose + Hilt  — GraphScreen, GraphViewModel, GraphCanvas
 :feature:trees  Compose + Hilt  — TreeScreen, TreeViewModel, TreeCanvas
+:feature:search Compose + Hilt  — SearchScreen, SearchViewModel, SearchCanvas
 :app            Application     — MainActivity, KodiflyaApplication, AlgorithmModule, AppNavigation
 ```
 
 Dependency rules (no cycles):
 - `:core:plugin` ← `:core:engine`, `:algorithms`, `:ui:component`, `:ui:algorithm`, all features
-- `:core:engine` ← `:ui:algorithm`, `:feature:sorting`, `:feature:graph`, `:feature:trees`
+- `:core:engine` ← `:ui:algorithm`, `:feature:sorting`, `:feature:graph`, `:feature:trees`, `:feature:search`
 - `:ui:component` ← `:ui:algorithm`, all feature modules
 - Feature modules are isolated — a feature module MUST NOT import another feature module
 - `:app` is the only module that imports all features (wiring layer)

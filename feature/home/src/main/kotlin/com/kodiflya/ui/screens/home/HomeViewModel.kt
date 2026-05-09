@@ -17,11 +17,11 @@ class HomeViewModel @Inject constructor(
         val algorithmCount: Int,
     )
 
-    // v1: categories are fixed; if a 4th category is added, update this list too.
     val categories: List<CategorySummary> = listOf(
-        CategorySummary(Category.SORTING, "Sort",  plugins.count { it.category == Category.SORTING }),
-        CategorySummary(Category.GRAPH,   "Graph", plugins.count { it.category == Category.GRAPH }),
-        CategorySummary(Category.TREES,   "Trees", plugins.count { it.category == Category.TREES }),
+        CategorySummary(Category.SORTING, "Sort",   plugins.count { it.category == Category.SORTING }),
+        CategorySummary(Category.GRAPH,   "Graph",  plugins.count { it.category == Category.GRAPH }),
+        CategorySummary(Category.TREES,   "Trees",  plugins.count { it.category == Category.TREES }),
+        CategorySummary(Category.SEARCH,  "Search", plugins.count { it.category == Category.SEARCH }),
     )
 
     val spotlightPlugin: AlgorithmPlugin =

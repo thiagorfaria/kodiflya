@@ -134,6 +134,7 @@ private fun CategoryCard(
                 Category.SORTING -> SortingMiniVisualization(modifier = Modifier.padding(6.dp))
                 Category.GRAPH   -> GraphMiniVisualization(modifier = Modifier.padding(6.dp))
                 Category.TREES   -> TreeMiniVisualization(modifier = Modifier.padding(6.dp))
+                Category.SEARCH  -> SearchMiniVisualization(modifier = Modifier.padding(6.dp))
             }
         }
     }
@@ -182,6 +183,7 @@ private fun CategoryChip(category: Category) {
         Category.SORTING -> "SORT"
         Category.GRAPH   -> "GRAPH"
         Category.TREES   -> "TREES"
+        Category.SEARCH  -> "SEARCH"
     }
     Text(
         text = label,

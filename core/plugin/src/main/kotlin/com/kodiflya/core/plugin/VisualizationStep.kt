@@ -63,6 +63,39 @@ sealed class VisualizationStep {
         override val metricValues: List<Long>
             get() = listOf(metrics.visited, metrics.totalNodes, metrics.height)
     }
+
+    // Search: full array snapshot + pointer positions per step (stateless rendering contract)
+    data class Search(
+        val values: IntArray,
+        val target: Int,
+        val current: Int?,
+        val left: Int?,
+        val right: Int?,
+        val eliminated: Set<Int>,
+        val found: Int?,
+        val metrics: SearchMetrics,
+    ) : VisualizationStep() {
+        // metricValues order matches every search plugin's metricLabels:
+        // [0] comparisons, [1] eliminated, [2] remaining
+        override val metricValues: List<Long>
+            get() = listOf(metrics.comparisons, metrics.eliminated, metrics.remaining)
+
+        override fun equals(other: Any?) =
+            other is Search && values.contentEquals(other.values) && target == other.target &&
+                current == other.current && left == other.left && right == other.right &&
+                eliminated == other.eliminated && found == other.found && metrics == other.metrics
+        override fun hashCode(): Int {
+            var result = values.contentHashCode()
+            result = 31 * result + target
+            result = 31 * result + (current ?: -1)
+            result = 31 * result + (left ?: -1)
+            result = 31 * result + (right ?: -1)
+            result = 31 * result + eliminated.hashCode()
+            result = 31 * result + (found ?: -1)
+            result = 31 * result + metrics.hashCode()
+            return result
+        }
+    }
 }
 
 enum class CellState { OPEN, WALL, VISITED, FRONTIER, PATH, START, END }

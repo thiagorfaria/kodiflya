@@ -27,6 +27,7 @@ import com.kodiflya.ui.screens.graph.GraphScreen
 import com.kodiflya.ui.screens.home.HomeScreen
 import com.kodiflya.ui.screens.sorting.SortingScreen
 import com.kodiflya.ui.screens.splash.SplashScreen
+import com.kodiflya.ui.screens.search.SearchScreen
 import com.kodiflya.ui.screens.trees.TreeScreen
 
 private const val ROUTE_HOME = "home"
@@ -42,7 +43,8 @@ private val navigationTabs = listOf(
     NavigationTab(ROUTE_HOME,             "Home",  NavigationIcons.HomeOutlined,  NavigationIcons.HomeFilled),
     NavigationTab(Category.SORTING.route, "Sort",  NavigationIcons.SortOutlined,  NavigationIcons.SortFilled),
     NavigationTab(Category.GRAPH.route,   "Graph", NavigationIcons.GraphOutlined, NavigationIcons.GraphFilled),
-    NavigationTab(Category.TREES.route,   "Tree",  NavigationIcons.TreesOutlined, NavigationIcons.TreesFilled),
+    NavigationTab(Category.TREES.route,   "Tree",   NavigationIcons.TreesOutlined,   NavigationIcons.TreesFilled),
+    NavigationTab(Category.SEARCH.route,  "Search", NavigationIcons.SearchOutlined,  NavigationIcons.SearchFilled),
 )
 
 @Composable
@@ -117,6 +119,7 @@ fun AppNavigation() {
             composable(Category.SORTING.route) { SortingScreen() }
             composable(Category.GRAPH.route)   { GraphScreen() }
             composable(Category.TREES.route)   { TreeScreen() }
+            composable(Category.SEARCH.route)  { SearchScreen() }
         }
     }
 }

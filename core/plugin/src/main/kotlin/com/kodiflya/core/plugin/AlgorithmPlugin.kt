@@ -16,6 +16,7 @@ enum class Category(val route: String) {
     SORTING("sort"),
     GRAPH("graph"),
     TREES("tree"),
+    SEARCH("search"),
 }
 
 enum class ColorRole { NEUTRAL, GREEN, PEACH, AMBER, PURPLE }
@@ -57,4 +58,12 @@ sealed class AlgorithmInput {
     ) : AlgorithmInput()
 
     data class TreeInput(val values: List<Int>) : AlgorithmInput()
+
+    data class SearchInput(val values: IntArray, val target: Int) : AlgorithmInput() {
+        override fun equals(other: Any?) =
+            other is SearchInput && values.contentEquals(other.values) && target == other.target
+        override fun hashCode(): Int = 31 * values.contentHashCode() + target
+    }
 }
+
+data class SearchMetrics(val comparisons: Long, val eliminated: Long, val remaining: Long)

@@ -1,6 +1,8 @@
 package com.kodiflya.di
 
 import com.kodiflya.algorithms.graph.BFS
+import com.kodiflya.algorithms.search.BinarySearch
+import com.kodiflya.algorithms.search.LinearSearch
 import com.kodiflya.algorithms.trees.BSTInorder
 import com.kodiflya.algorithms.trees.BSTPostorder
 import com.kodiflya.algorithms.trees.BSTPreorder
@@ -35,4 +37,7 @@ object AlgorithmModule {
     @Provides @IntoSet fun provideBSTInorder(): AlgorithmPlugin = BSTInorder()
     @Provides @IntoSet fun provideBSTPreorder(): AlgorithmPlugin = BSTPreorder()
     @Provides @IntoSet fun provideBSTPostorder(): AlgorithmPlugin = BSTPostorder()
+
+    @Provides @IntoSet fun provideBinarySearch(): AlgorithmPlugin = BinarySearch()
+    @Provides @IntoSet fun provideLinearSearch(): AlgorithmPlugin = LinearSearch()
 }
