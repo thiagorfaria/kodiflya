@@ -65,6 +65,7 @@ dependencies {
     implementation(project(":feature:graph"))
     implementation(project(":feature:trees"))
     implementation(project(":feature:search"))
+    implementation(project(":feature:bigo"))
 
     // Compose
     implementation(platform(libs.compose.bom))

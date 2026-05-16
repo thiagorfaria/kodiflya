@@ -22,12 +22,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kodiflya.core.plugin.BigO
 import com.kodiflya.core.plugin.VisualizationStep
 import com.kodiflya.ui.component.speedLevels
 import com.kodiflya.ui.screens.AlgorithmScreenLayout
 
 @Composable
-fun TreeScreen(viewModel: TreeViewModel = hiltViewModel()) {
+fun TreeScreen(onComplexityClick: (BigO) -> Unit, viewModel: TreeViewModel = hiltViewModel()) {
     val visualizationState by viewModel.state.collectAsStateWithLifecycle()
     val activeIndex by viewModel.activeIndex.collectAsStateWithLifecycle()
     var speedIndex by remember { mutableFloatStateOf(1f) }
@@ -53,6 +54,7 @@ fun TreeScreen(viewModel: TreeViewModel = hiltViewModel()) {
         onPause = viewModel::pause,
         onReset = viewModel::reset,
         onReplay = viewModel::replay,
+        onComplexityClick = onComplexityClick,
         canvas = { TreeCanvas(step = step, modifier = Modifier.fillMaxSize()) },
         extraContent = {
             TraversalSequenceRow(

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -31,7 +30,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.TextStyle
@@ -40,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.withFrameMillis
+import com.kodiflya.ui.component.ComplexityRainbowBar
 import com.kodiflya.ui.component.KodiflyaLogoMark
 import com.kodiflya.ui.theme.SpaceMonoFamily
 import kotlin.math.PI
@@ -66,6 +65,7 @@ fun SplashScreen(onDone: () -> Unit) {
     )
 
     val primary = MaterialTheme.colorScheme.primary
+    val background = MaterialTheme.colorScheme.background
     val onSurface = MaterialTheme.colorScheme.onSurface
     val muted2 = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)
 
@@ -97,7 +97,7 @@ fun SplashScreen(onDone: () -> Unit) {
             .drawBehind {
                 drawRect(
                     brush = Brush.radialGradient(
-                        colors = listOf(primary.copy(alpha = 0.08f), Color.Transparent),
+                        colors = listOf(primary.copy(alpha = 0.08f), background.copy(alpha = 0f)),
                         center = Offset(size.width * 0.5f, size.height * 0.38f),
                         radius = size.width * 0.7f,
                     ),
@@ -181,15 +181,13 @@ fun SplashScreen(onDone: () -> Unit) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(2.dp)
-                    .clip(RoundedCornerShape(1.dp))
+                    .height(3.dp)
+                    .clip(RoundedCornerShape(2.dp))
                     .background(primary.copy(alpha = 0.12f)),
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(progressFill)
-                        .fillMaxHeight()
-                        .background(primary),
+                ComplexityRainbowBar(
+                    modifier = Modifier.fillMaxWidth(),
+                    fill = progressFill,
                 )
             }
 

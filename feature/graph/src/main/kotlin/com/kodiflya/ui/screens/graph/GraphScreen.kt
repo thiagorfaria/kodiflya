@@ -10,12 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kodiflya.core.plugin.AlgorithmInput
+import com.kodiflya.core.plugin.BigO
 import com.kodiflya.core.plugin.VisualizationStep
 import com.kodiflya.ui.component.speedLevels
 import com.kodiflya.ui.screens.AlgorithmScreenLayout
 
 @Composable
-fun GraphScreen(viewModel: GraphViewModel = hiltViewModel()) {
+fun GraphScreen(onComplexityClick: (BigO) -> Unit, viewModel: GraphViewModel = hiltViewModel()) {
     val visualizationState by viewModel.state.collectAsStateWithLifecycle()
     val activeIndex by viewModel.activeIndex.collectAsStateWithLifecycle()
     var speedIndex by remember { mutableFloatStateOf(1f) }
@@ -43,6 +44,7 @@ fun GraphScreen(viewModel: GraphViewModel = hiltViewModel()) {
         onPause = viewModel::pause,
         onReset = viewModel::reset,
         onReplay = viewModel::replay,
+        onComplexityClick = onComplexityClick,
         canvas = { GraphCanvas(step = step, initialGrid = initialGrid, modifier = Modifier.fillMaxSize()) },
     )
 }

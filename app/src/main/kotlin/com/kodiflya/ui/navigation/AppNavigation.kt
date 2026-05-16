@@ -17,12 +17,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.kodiflya.core.plugin.BigO
 import com.kodiflya.core.plugin.Category
 import com.kodiflya.ui.component.NavigationIcons
+import com.kodiflya.ui.screens.bigo.BigOScreen
 import com.kodiflya.ui.screens.graph.GraphScreen
 import com.kodiflya.ui.screens.home.HomeScreen
 import com.kodiflya.ui.screens.sorting.SortingScreen
@@ -31,6 +35,7 @@ import com.kodiflya.ui.screens.search.SearchScreen
 import com.kodiflya.ui.screens.trees.TreeScreen
 
 private const val ROUTE_HOME = "home"
+private const val ROUTE_BIG_O = "bigo"
 
 private data class NavigationTab(
     val route: String,
@@ -68,36 +73,41 @@ fun AppNavigation() {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
+    val currentRoute = currentDestination?.route
+
+    val showBottomBar = currentRoute?.startsWith(ROUTE_BIG_O) == false
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
-            NavigationBar(
-                containerColor = MaterialTheme.colorScheme.surface,
-                contentColor = MaterialTheme.colorScheme.onSurface,
-            ) {
-                navigationTabs.forEach { tab ->
-                    val selected = currentDestination?.hierarchy?.any { it.route == tab.route } == true
-                    NavigationBarItem(
-                        selected = selected,
-                        onClick = {
-                            navController.navigate(tab.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+            if (showBottomBar) {
+                NavigationBar(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                ) {
+                    navigationTabs.forEach { tab ->
+                        val selected = currentDestination?.hierarchy?.any { it.route == tab.route } == true
+                        NavigationBarItem(
+                            selected = selected,
+                            onClick = {
+                                navController.navigate(tab.route) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        icon = {
-                            Icon(
-                                imageVector = if (selected) tab.selectedIcon else tab.icon,
-                                contentDescription = tab.label,
-                            )
-                        },
-                        label = { Text(tab.label) },
-                        colors = navigationBarItemColors(),
-                    )
+                            },
+                            icon = {
+                                Icon(
+                                    imageVector = if (selected) tab.selectedIcon else tab.icon,
+                                    contentDescription = tab.label,
+                                )
+                            },
+                            label = { Text(tab.label) },
+                            colors = navigationBarItemColors(),
+                        )
+                    }
                 }
             }
         },
@@ -116,10 +126,29 @@ fun AppNavigation() {
                     }
                 })
             }
-            composable(Category.SORTING.route) { SortingScreen() }
-            composable(Category.GRAPH.route)   { GraphScreen() }
-            composable(Category.TREES.route)   { TreeScreen() }
-            composable(Category.SEARCH.route)  { SearchScreen() }
+            composable(Category.SORTING.route) {
+                SortingScreen(onComplexityClick = { bigO -> navController.navigate("$ROUTE_BIG_O?notation=${bigO.name}") })
+            }
+            composable(Category.GRAPH.route) {
+                GraphScreen(onComplexityClick = { bigO -> navController.navigate("$ROUTE_BIG_O?notation=${bigO.name}") })
+            }
+            composable(Category.TREES.route) {
+                TreeScreen(onComplexityClick = { bigO -> navController.navigate("$ROUTE_BIG_O?notation=${bigO.name}") })
+            }
+            composable(Category.SEARCH.route) {
+                SearchScreen(onComplexityClick = { bigO -> navController.navigate("$ROUTE_BIG_O?notation=${bigO.name}") })
+            }
+            composable(
+                route = "$ROUTE_BIG_O?notation={notation}",
+                arguments = listOf(navArgument("notation") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                }),
+            ) { backStackEntry ->
+                val notationName = backStackEntry.arguments?.getString("notation").orEmpty()
+                val highlightBigO = BigO.entries.find { it.name == notationName }
+                BigOScreen(highlightBigO = highlightBigO)
+            }
         }
     }
 }

@@ -19,20 +19,22 @@ enum class Category(val route: String) {
     SEARCH("search"),
 }
 
-enum class ColorRole { NEUTRAL, GREEN, PEACH, AMBER, PURPLE }
+enum class ColorRole { NEUTRAL, GREEN, BLUE, MOSS, AMBER, PEACH, DUSTY_ROSE, PURPLE }
 
 data class MetricLabel(val label: String, val colorRole: ColorRole)
 
-enum class BigO(val label: String) {
-    O_1("O(1)"),
-    O_LOG_N("O(log n)"),
-    O_H("O(h)"),
-    O_N("O(n)"),
-    O_V("O(V)"),
-    O_N_LOG_N("O(n log n)"),
-    O_V_PLUS_E("O(V+E)"),
-    O_N_SQUARED("O(n²)"),
-    O_V_PLUS_E_LOG_V("O((V+E)log V)"),
+enum class BigO(val label: String, val colorRole: ColorRole) {
+    O_1(          "O(1)",           ColorRole.GREEN),
+    O_LOG_N(      "O(log n)",       ColorRole.BLUE),
+    O_H(          "O(h)",           ColorRole.PURPLE),
+    O_N(          "O(n)",           ColorRole.MOSS),
+    O_V(          "O(V)",           ColorRole.MOSS),
+    O_N_LOG_N(    "O(n log n)",     ColorRole.AMBER),
+    O_V_PLUS_E(   "O(V+E)",         ColorRole.MOSS),
+    O_N_SQUARED(  "O(n²)",          ColorRole.PEACH),
+    O_V_PLUS_E_LOG_V("O((V+E)log V)", ColorRole.AMBER),
+    O_2_N(        "O(2ⁿ)",          ColorRole.DUSTY_ROSE),
+    O_N_FACTORIAL("O(n!)",          ColorRole.PURPLE),
 }
 
 data class Complexity(

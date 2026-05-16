@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.kodiflya.core.plugin.AlgorithmPlugin
+import com.kodiflya.core.plugin.BigO
 import com.kodiflya.core.plugin.PlaybackStatus
 import com.kodiflya.ui.component.AlgorithmChipRow
 import com.kodiflya.ui.component.ComplexityCardsRow
@@ -37,6 +38,7 @@ fun AlgorithmScreenLayout(
     onPause: () -> Unit,
     onReset: () -> Unit,
     onReplay: () -> Unit,
+    onComplexityClick: (BigO) -> Unit,
     canvas: @Composable () -> Unit,
     extraContent: (@Composable () -> Unit)? = null,
 ) {
@@ -49,7 +51,7 @@ fun AlgorithmScreenLayout(
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        ScreenHeader(algorithmName = activePlugin.displayName)
+        ScreenHeader(subtitle = activePlugin.displayName)
 
         AlgorithmChipRow(
             plugins = plugins,
@@ -85,7 +87,7 @@ fun AlgorithmScreenLayout(
 
         extraContent?.invoke()
 
-        ComplexityCardsRow(complexity = activePlugin.complexity)
+        ComplexityCardsRow(complexity = activePlugin.complexity, onCardClick = onComplexityClick)
 
         ControlsRow(
             playbackStatus = playbackStatus,

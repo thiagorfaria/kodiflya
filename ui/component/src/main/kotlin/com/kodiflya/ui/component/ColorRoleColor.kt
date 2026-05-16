@@ -15,9 +15,12 @@ import com.kodiflya.core.plugin.ColorRole
 //   NEUTRAL → onSurface
 @Composable
 fun ColorRole.toColor(): Color = when (this) {
-    ColorRole.GREEN   -> MaterialTheme.colorScheme.primary
-    ColorRole.PEACH   -> MaterialTheme.colorScheme.secondary
-    ColorRole.PURPLE  -> MaterialTheme.colorScheme.tertiary
-    ColorRole.AMBER   -> MaterialTheme.colorScheme.error
-    ColorRole.NEUTRAL -> MaterialTheme.colorScheme.onSurface
+    ColorRole.GREEN      -> MaterialTheme.colorScheme.primary
+    ColorRole.BLUE       -> MaterialTheme.colorScheme.primaryContainer
+    ColorRole.MOSS       -> MaterialTheme.colorScheme.secondaryContainer
+    ColorRole.AMBER      -> MaterialTheme.colorScheme.error
+    ColorRole.PEACH      -> MaterialTheme.colorScheme.secondary
+    ColorRole.DUSTY_ROSE -> MaterialTheme.colorScheme.tertiaryContainer
+    ColorRole.PURPLE     -> MaterialTheme.colorScheme.tertiary
+    ColorRole.NEUTRAL    -> MaterialTheme.colorScheme.onSurface
 }
